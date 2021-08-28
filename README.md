@@ -1,2 +1,7 @@
 # Teaching
-Repository containing subjects and code for classes I am teaching
+
+This repository contains a list of projects for students I teach.
+
+## Projects
+
+TODO

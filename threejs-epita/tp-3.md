@@ -8,6 +8,11 @@ For the first threshold, you are asked to simply load the glTF file:
 assets/models/LittlestTokyo.glb
 ```
 
+Because the file is compressed, you will need to give Three.js the [draco](https://github.com/google/draco/tree/master/src/draco) library. Draco is a Google library
+used for compression / decompression of meshes.
+
+You can download the draco library files and place it in your static folder and give the path to Three.js.
+
 You should obtain something similar to that:
 
 ![](screenshots/tp3/gltf.jpg)

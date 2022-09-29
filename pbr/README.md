@@ -99,23 +99,15 @@ Now that you implemented both the diffuse and the specular IBL, take a look at t
 
 ![Example of results you should obtain with both the diffuse and specular IBL](./screenshots/ibl-total.jpg)
 
-## Going Further
+## Bonus
 
-The feature described here aren't mandatory but will make you learn a lot of stuff!
-
-### 1. Textures
+### Textures
 
 PBR is meaningless without carefully authored textures bringing complexity to materials.
 
 You can download some texture that would map well to a sphere, such as [those ones](http://freepbr.com/materials/rusted-iron-pbr-metal-material-alt/).
 
-### 2. Experiment BRDFs
-
-There are a lot of other BRDFs, whether it is for the diffuse component or the specular one.
-Try to experiment with some of them and compare how they look. You can try any BRDFs you want,
-such that the Burley diffuse.
-
-### 3. Image-Based Lighting
+### Image-Based Lighting
 
 #### Diffuse
 
@@ -128,7 +120,17 @@ environment texture.
 Just like you did for the diffuse, you can generate the specular probe. This task is harder,
 but will definitely make you stronger.
 
-### 2. Anything you can think of...
+## Going Further
+
+The feature described here aren't mandatory but will make you learn a lot of stuff!
+
+### Experiment BRDFs
+
+There are a lot of other BRDFs, whether it is for the diffuse component or the specular one.
+Try to experiment with some of them and compare how they look. You can try any BRDFs you want,
+such that the Burley diffuse.
+
+### Anything you can think of...
 
 There are so many fun things you can do:
 * Loading more complex models

@@ -59,7 +59,18 @@ to ensure every intermediate result is correct:
 This is the kind of results you should get with 4 point lights:
 ![Example of results you should obtain with point lights](./screenshots/pointlights.jpg)
 
-### 2. Image-Based Lighting (IBL): Diffuse
+### Image-Based Lighting
+
+For the Image-Based Lighting, the textures are encoded in **RGBM**. In order to map **RGBM** to **RGB**,
+you will need to find the formula somewhere. It should be a simple linear range remapping.
+
+Example:
+
+![Example of RGBM texture](./assets/env/Alexs_Apt_2k-diffuse-RGBM.png)
+
+The texture might look off to you, but it's because it's displayed as-is while it's encoded in RGBM.
+
+#### Image-Based Lighting (IBL): Diffuse
 
 The tasks to accomplish to lit your objects with the diffuse IBL are:
 1. Load one of the  `diffuse` files provied in the folder `assets/env`
@@ -71,7 +82,7 @@ The tasks to accomplish to lit your objects with the diffuse IBL are:
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-diffuse-RGBM.png`:
 ![Example of results you should obtain using only the diffuse IBL](./screenshots/ibl-diffuse.jpg)
 
-### 3. Image-Based Lighting (IBL): Specular
+#### Image-Based Lighting (IBL): Specular
 
 For the specular IBL, the texture encodes different version of the environment
 for different roughness values. There is a total of **6** roughness levels, starting
@@ -114,6 +125,10 @@ You can download some texture that would map well to a sphere, such as [those on
 For this project, you have worked with pre-convolved diffuse data. Instead of using
 the asset in the repository, try to generate yourself the convolved diffuse of an
 environment texture.
+
+Example:
+
+![Example of RGBM texture](./assets/env/Alexs_Apt_2k-diffuse-RGBM.png)
 
 #### Specular
 

@@ -5,8 +5,22 @@ The goal of this project is to implement a PBR renderer. You are asked to implem
 * A Cook-Torrance GGX specular BRDF
 
 To learn about:
+* The grading system, please reach the [Grading section](#grading)
 * The subject, please reach the [Assignment section](#assignment)
 * The provided code, please have a look at the [Provided Code section](#provided-code).
+
+## Grading
+
+* Group size: **1**
+* Due date: **28/10/2022**, **11:42PM**
+* Format: `tar` or `zip` of the entire project
+* Send to david.peicho@gmail.com with the subject:
+
+```sh
+[IMAGE][PBR] Rendu <First Name> <Last Name> 
+```
+
+You will see that the grades can overflow **20 points**, and I will give it as-is to the school administration. Obviously, whether it's clamped or not in the end is out of my control.
 
 ## Installation
 
@@ -42,7 +56,7 @@ go step by step and to check intermediate results.
 It's important to ensure intermediate results are correct. Otherwise, you will spend time
 trying to figure out why your specular is off, when the issue might actually comes from a different part of the pipeline.
 
-### 1. Ponctual Lights
+### Ponctual Lights (10 points)
 
 You can implement either directional lights or point lights (or both!). For better visual results,
 I would advise you to go for point lights :)
@@ -59,7 +73,7 @@ to ensure every intermediate result is correct:
 This is the kind of results you should get with 4 point lights:
 ![Example of results you should obtain with point lights](./screenshots/pointlights.jpg)
 
-### Image-Based Lighting
+### Image-Based Lighting Lookup
 
 For the Image-Based Lighting, the textures are encoded in **RGBM**. In order to map **RGBM** to **RGB**,
 you will need to find the formula somewhere. It should be a simple linear range remapping.
@@ -70,7 +84,7 @@ Example:
 
 The texture might look off to you, but it's because it's displayed as-is while it's encoded in RGBM.
 
-#### Image-Based Lighting (IBL): Diffuse
+#### Image-Based Lighting: Diffuse (1 points)
 
 The tasks to accomplish to lit your objects with the diffuse IBL are:
 1. Load one of the  `diffuse` files provied in the folder `assets/env`
@@ -82,7 +96,7 @@ The tasks to accomplish to lit your objects with the diffuse IBL are:
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-diffuse-RGBM.png`:
 ![Example of results you should obtain using only the diffuse IBL](./screenshots/ibl-diffuse.jpg)
 
-#### Image-Based Lighting (IBL): Specular
+#### Image-Based Lighting: Specular (2 points)
 
 For the specular IBL, the texture encodes different version of the environment
 for different roughness values. There is a total of **6** roughness levels, starting
@@ -110,43 +124,48 @@ Now that you implemented both the diffuse and the specular IBL, take a look at t
 
 ![Example of results you should obtain with both the diffuse and specular IBL](./screenshots/ibl-total.jpg)
 
+### Image-Based Lighting Generation
+
+For this project, you have worked with pre-computed data. Instead of using the asses from the repository,
+try to generate yourself the cached environment textures.
+
+#### Image-Based Lighting: Diffuse (5 points)
+
+> Careful: Compute shaders aren't available in WebGL.
+
+In this steps, you are asked to write a compute / fragment shader to generate the convoluted diffuse. This should obviouly done only once. You can do it once when your application is starting up. A lag of a few milliseconds might occur, which is totally fine.
+
+Steps:
+1. Create a framebuffer
+2. Create a texture
+3. Attach the texture to the framebuffer
+4. Create a shader that will convolute the environment diffuse and write it to the texture
+5. Use this result in your PBR shader
+
 ## Bonus
 
-### Textures
+### Other BRDF (0.5 points)
+
+You can experiment with other BRDFs (diffuse or specular), such as:
+* Burley
+* Oren-Nayar
+* Ward
+
+Whatever you want to try!
+
+### Textures (1.5 points)
 
 PBR is meaningless without carefully authored textures bringing complexity to materials.
 
 You can download some texture that would map well to a sphere, such as [those ones](http://freepbr.com/materials/rusted-iron-pbr-metal-material-alt/).
 
-### Image-Based Lighting
+### Image-Based Lighting Generation
 
-#### Diffuse
+#### Specular (8 points)
 
-For this project, you have worked with pre-convolved diffuse data. Instead of using
-the asset in the repository, try to generate yourself the convolved diffuse of an
-environment texture.
+Just like you did for the diffuse, you can generate the specular probe. This task is harder, but will definitely make you stronger.
 
-#### Specular
-
-Just like you did for the diffuse, you can generate the specular probe. This task is harder,
-but will definitely make you stronger.
-
-## Going Further
-
-The feature described here aren't mandatory but will make you learn a lot of stuff!
-
-### Experiment BRDFs
-
-There are a lot of other BRDFs, whether it is for the diffuse component or the specular one.
-Try to experiment with some of them and compare how they look. You can try any BRDFs you want,
-such that the Burley diffuse.
-
-### Anything you can think of...
-
-There are so many fun things you can do:
-* Loading more complex models
-* Add several light probe with blending
-* ...
+Please refer to the paper [Unreal paper](https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf) for the implementation. Don't hesitate to come see me during the lesson so I can give you a detailed explanation about what you have to do.
 
 ## Provided Code
 

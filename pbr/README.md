@@ -126,10 +126,6 @@ For this project, you have worked with pre-convolved diffuse data. Instead of us
 the asset in the repository, try to generate yourself the convolved diffuse of an
 environment texture.
 
-Example:
-
-![Example of RGBM texture](./assets/env/Alexs_Apt_2k-diffuse-RGBM.png)
-
 #### Specular
 
 Just like you did for the diffuse, you can generate the specular probe. This task is harder,

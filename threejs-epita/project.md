@@ -3,20 +3,26 @@
 The goal of this project is to create the future of online shopping. It doesn't
 sound exciting? Make it exciting then :)
 
+For students that don't know what they want to do, this project can be a lot of fun and will make you use a lot of features we have seen together :)
+
 ## Information
 
 * Done in group of **2 students**
   * Please let me know the name of the students in the README.md
-* Submitted by December 1st at **23:42**
+* Submitted by the 5th of December at **23:42**
 * Hosted if possible, so I can try it out easily :)
+* You can't use [react-three-fiber](https://github.com/pmndrs/react-three-fiber)
 
 You will need to submit the code as well, either by:
 * Sending a zip
 * Sending an hosted repository URL
 
 You are free to design the website's layout / visual look the way you want.
-There are only a few technical requirements that are asked, but the
-rest is up to **your choice**. Enjoy the project and try to be original!
+
+There are only a few technical requirements that are asked, but the rest is up to **your choice**. Enjoy the project and try to be original!
+
+> If you plan to make something super different and highly custom, maybe ask me first so we can see if it properly fits the project
+> For instance, a group of student once made the entire project in 3D, with 0 CSS
 
 For assets, you are advised to download free ones on:
 * [Sketchfab](https://sketchfab.com/)
@@ -25,9 +31,11 @@ For assets, you are advised to download free ones on:
 
 Please remember to always thank the author for providing you amazing free assets!
 
+> P.S: I am OK to discuss with student that want to make a completely different project. However, we will need to discuss the scope of your project before to ensure it's not too hard nor too easy to achieve.
+
 ## Grade
 
-As mentionned, the project should be submitted by December 1st **23:24**. Every minute late will result in a **-1 point** penalty.
+As mentionned, the project should be submitted by the **5th** of December at **23:24**. Every minute late will result in a **-1 point** penalty.
 
 The grade will be divided into **three** (no pun intended) categories:
 * Mandatory Requirements
@@ -114,7 +122,7 @@ look great. We have seen how some features can drastically improve your renders,
 please use them to get the best possible outcome.
 
 * Materials should be Physically-Based
-  * if you want to mix in fake product for fun, you can use non-PBR materials
+  * If you want to mix in fake product for fun, you can use non-PBR materials
 * After some time with no user inputs, the camera should smoothly rotate
   around the object to showcase it.
 * Add annotations that allows user to get 3D information on mesh

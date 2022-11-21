@@ -1,6 +1,4 @@
-# Project
-
-## Subject
+# Subject
 
 You are *free* (kind of) to choose a project, however:
 * You need to run it through me first to ensure it's not too easy / too hard
@@ -8,13 +6,13 @@ You are *free* (kind of) to choose a project, however:
 
 If you *really really* do a super custom project, we can see together how to refine the mandatory, meaning: changing the features set.
 
-## Default Subject
+## No Idea?
 
 For those that don't have an idea or simply want to go with my idea: **Next Generation Shopping**.
 
 The goal of this project is to create the future of online shopping. It doesn't sound exciting? Make it exciting then :)
 
-## Technologies
+# Technologies
 
 For the frontend, you can use absolutely whatever you want:
 * React
@@ -24,24 +22,24 @@ For the frontend, you can use absolutely whatever you want:
 
 However, because this course is about learning Three.js, you are forbidden to use [React Three Fiber](https://github.com/pmndrs/react-three-fiber). I can only advise you to check it out, but not for this project :)
 
-## Information
+# Information
 
 * Done in group of **2 students**
   * Please let me know the name of the students in the README.md
-* Submitted by the 5th of December at **23:42**
+* Submitted by the 7th of December at **23:42**
+* **-1 point** penalty per minute late
 * Hosted if possible, so I can try it out easily :)
-* You can't use [react-three-fiber](https://github.com/pmndrs/react-three-fiber)
 
-You will need to submit the code as well, either by:
-* Sending a zip
-* Sending an hosted repository URL
+The grade will be divided into **three** (no pun intended) categories:
+* Mandatory Requirements
+* Originality
+* User Experience
 
-You are free to design the website's layout / visual look the way you want.
+If the website is dynamic, with smooth transition, fancy animations, you will get the best possible grade. Obviously, it must be dynamic but **shouldn't** affect negatively the user experience (e.g: waiting 10s for an animation to finish).
 
-There are only a few technical requirements that are asked, but the rest is up to **your choice**. Enjoy the project and try to be original!
+You will need to send a zip. If they are too large, please host them on your school Google Drive or something.
 
-> If you plan to make something super different and highly custom, maybe ask me first so we can see if it properly fits the project
-> For instance, a group of student once made the entire project in 3D, with 0 CSS
+You are free to design the website's layout / visual look the way you want. There are only a few technical requirements that are asked, but the rest is up to **your choice**. Enjoy the project and try to be original!
 
 For assets, you are advised to download free ones on:
 * [Sketchfab](https://sketchfab.com/)
@@ -50,30 +48,14 @@ For assets, you are advised to download free ones on:
 
 Please remember to always thank the author for providing you amazing free assets!
 
-> P.S: I am OK to discuss with student that want to make a completely different project. However, we will need to discuss the scope of your project before to ensure it's not too hard nor too easy to achieve.
+# Default Subject: Ideas
 
-## Grade
+Here I give a couple of ideas you could follow to get the best possible grade. Those screens, if done correctly, could make you go through all the mandatory features.
 
-As mentionned, the project should be submitted by the **5th** of December at **23:24**. Every minute late will result in a **-1 point** penalty.
-
-The grade will be divided into **three** (no pun intended) categories:
-* Mandatory Requirements
-* Originality
-* User Experience
-
-If the website is dynamic, with smooth transition, fancy animations, you will
-get the best possible grade. Obviously, it must be dynamic but **shouldn't**
-affect negatively the user experience (e.g: waiting 10s for an animation to finish).
-
-## Screens
-
-Below is the list of screens that you will need to implement. you can either make a single page or multipage website.
-
-The images shown in this section are purely here to help you visualize how
-the website could look like. This doesn't mean you should take this exact
+The images shown in this section are purely here to help you visualize how the website could look like. This doesn't mean you should take this exact
 design or layout.
 
-### Home Page
+## Home Page
 
 ![Example of what an Home page could look like](screenshots/project/page1.jpg)
 
@@ -95,7 +77,7 @@ few `WebGLRenderer` per tab, you will need to:
 * Render each item to the hidden canvas
 * Copy the pixels from the hidden canvas to the product canvas using [Context2D.drawImage](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage)
 
-### Viewer Page
+## Viewer Page
 
 ![Example of what the Viewer page could look like](screenshots/project/page2.jpg)
 ![Example of what the Viewer page could look like](screenshots/project/page3.jpg)
@@ -110,11 +92,28 @@ This page is used to display:
 Cycling through the product should be done entirely in 3D with a smooth
 transition between the products.
 
-## Mandatory: Navigation
+# Grade
+
+## Originality
+
+You will get those points based on how original & friendly the website is, including:
+* Design
+* Interesting interactions
+
+## User Experience
+
+Users have high expectations. If your website is:
+* Friendly to use (I don't need 5min to figure out something)
+* Fast & Smooth
+
+You will get the best possible grade.
+
+## Navigation
 
 * Home should display a scrollable list of product.
   * Data out of the screen shouldn't be loaded
   * Canvas out of the screen shouldn't be rendered
+  * Your list must be at least of size 16 (it's not a random number :))
 * User must be able to select a product and open it in a larger view
 * When a product is selected, it should display its information as well
   as the [Edition Panel](#mandatory-edition-panel)
@@ -124,14 +123,7 @@ transition between the products.
   * All products **shouldn't** be loaded simulatenously!
 * There must be a way to come back to the scrollable list from the viewer page
 
-## Mandatory: Edition Panel
-
-You must provide an edition panel with the following features:
-
-* Changing material color
-* Any other cool options you want :)
-
-## Mandatory: Viewer
+## Viewer
 
 I have purposely left out some mandatory viewer feature here because you should
 know by now what kind of features can help make a 3D scene look good or not.
@@ -151,7 +143,7 @@ For the annotations, you can get an example of things you should do [here](https
 For your annotations, you can display any text as a placeholder. They
 do not need to become transparent when rotating around the model.
 
-### Controls
+## Controls
 
 When the user is in the viewer tab, he / she should be able to:
 
@@ -160,7 +152,7 @@ When the user is in the viewer tab, he / she should be able to:
   * You will need to figure out where the user clicked, and
     move the camera closer to focus this point
 
-### Shadows
+## Shadows
 
 Your scene will need to have some real light shadows coming from a direction light, that:
 
@@ -172,7 +164,7 @@ Your scene will need to have some real light shadows coming from a direction lig
 > To increase realism, try to make your directional light match the main light coming
 > from your environment. You are allowed to hardcode this.
 
-### Post-Processing
+## Post-Processing
 
 You need to use properly at least **one** post-process. It's up to you to choose
 what you want to do.

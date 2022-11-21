@@ -1,9 +1,28 @@
-# Project: Next Generation Shopping
+# Project
 
-The goal of this project is to create the future of online shopping. It doesn't
-sound exciting? Make it exciting then :)
+## Subject
 
-For students that don't know what they want to do, this project can be a lot of fun and will make you use a lot of features we have seen together :)
+You are *free* (kind of) to choose a project, however:
+* You need to run it through me first to ensure it's not too easy / too hard
+* You need to implement the same kind of mandatory described in the [Grade Section](#grade)
+
+If you *really really* do a super custom project, we can see together how to refine the mandatory, meaning: changing the features set.
+
+## Default Subject
+
+For those that don't have an idea or simply want to go with my idea: **Next Generation Shopping**.
+
+The goal of this project is to create the future of online shopping. It doesn't sound exciting? Make it exciting then :)
+
+## Technologies
+
+For the frontend, you can use absolutely whatever you want:
+* React
+* Vue
+* Svelte
+* Vanilla JS
+
+However, because this course is about learning Three.js, you are forbidden to use [React Three Fiber](https://github.com/pmndrs/react-three-fiber). I can only advise you to check it out, but not for this project :)
 
 ## Information
 

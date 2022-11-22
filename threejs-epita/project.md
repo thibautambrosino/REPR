@@ -3,6 +3,7 @@
 You are *free* (kind of) to choose a project, however:
 * You need to run it through me first to ensure it's not too easy / too hard
 * You need to implement the same kind of mandatory described in the [Grade Section](#grade)
+    * For really custom project, we will refine together the mandatory
 
 If you *really really* do a super custom project, we can see together how to refine the mandatory, meaning: changing the features set.
 
@@ -94,13 +95,13 @@ transition between the products.
 
 # Grade
 
-## Originality
+## Originality (4 points)
 
 You will get those points based on how original & friendly the website is, including:
 * Design
 * Interesting interactions
 
-## User Experience
+## User Experience (2 points)
 
 Users have high expectations. If your website is:
 * Friendly to use (I don't need 5min to figure out something)
@@ -108,22 +109,20 @@ Users have high expectations. If your website is:
 
 You will get the best possible grade.
 
-## Navigation
+## Navigation (4 points)
 
 * Home should display a scrollable list of product.
   * Data out of the screen shouldn't be loaded
   * Canvas out of the screen shouldn't be rendered
   * Your list must be at least of size 16 (it's not a random number :))
 * User must be able to select a product and open it in a larger view
-* When a product is selected, it should display its information as well
-  as the [Edition Panel](#mandatory-edition-panel)
 * In the viewer page, users should be able to cycle through products **without**
   going back to the scroll list
   * The transition should be smooth (e.g: fade in/out, slide in/out, etc...)
   * All products **shouldn't** be loaded simulatenously!
 * There must be a way to come back to the scrollable list from the viewer page
 
-## Viewer
+## Viewer (5 points)
 
 I have purposely left out some mandatory viewer feature here because you should
 know by now what kind of features can help make a 3D scene look good or not.
@@ -132,27 +131,20 @@ In addition to all the mandatory features listed below, your viewer **must**
 look great. We have seen how some features can drastically improve your renders,
 please use them to get the best possible outcome.
 
-* Materials should be Physically-Based
-  * If you want to mix in fake product for fun, you can use non-PBR materials
-* After some time with no user inputs, the camera should smoothly rotate
-  around the object to showcase it.
+* After some time with no user inputs, the camera should smoothly rotate around the object to showcase it.
 * Add annotations that allows user to get 3D information on mesh
+    * You can get an example of things you should do [here](https://modelviewer.dev/examples/annotations/index.html#addHotspots).
+    * You can display any text as a placeholder. They do not need to become transparent when rotating around the model.
 
-For the annotations, you can get an example of things you should do [here](https://modelviewer.dev/examples/annotations/index.html#addHotspots).
+## Controls (2 points)
 
-For your annotations, you can display any text as a placeholder. They
-do not need to become transparent when rotating around the model.
-
-## Controls
-
-When the user is in the viewer tab, he / she should be able to:
+In the viewer tab, the user should be able to:
 
 * Navigate around the object using mouse inputs
 * Double click to focus a point on the object
-  * You will need to figure out where the user clicked, and
-    move the camera closer to focus this point
+  * You will need to figure out where the user clicked, and move the camera closer to focus this point
 
-## Shadows
+## Shadows (2 points)
 
 Your scene will need to have some real light shadows coming from a direction light, that:
 
@@ -164,10 +156,9 @@ Your scene will need to have some real light shadows coming from a direction lig
 > To increase realism, try to make your directional light match the main light coming
 > from your environment. You are allowed to hardcode this.
 
-## Post-Processing
+## Post-Processing (1 points)
 
-You need to use properly at least **one** post-process. It's up to you to choose
-what you want to do.
+You need to use properly at least **one** post-process. It's up to you to choose what you want to do.
 
 The goal is to make the final image look good. I recommend you to use:
 

@@ -12,9 +12,9 @@ To learn about:
 ## Grading
 
 * Group size: **1**
-* Due date: **02/11/2022**, **11:42PM**
+* Due date: **10/12/2023**, **11:42PM**
 * Format: `tar` or `zip` of the entire project
-* Send to david.peicho@gmail.com with the subject:
+* Send to alexandre.lamure@epita.fr with the subject:
 
 ```sh
 [IMAGE][PBR] Rendu <First Name> <Last Name> 

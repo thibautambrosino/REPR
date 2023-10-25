@@ -23,8 +23,8 @@ out vec3 vNormalWS;
 
 struct Camera
 {
-  mat4 view;
-  mat4 projection;
+  mat4 worldToView;
+  mat4 viewToClip;
 };
 
 uniform Camera uCamera;
@@ -33,6 +33,6 @@ void
 main()
 {
   vec4 positionLocal = vec4(in_position, 1.0);
-  gl_Position = uCamera.projection * uCamera.view * positionLocal;
+  gl_Position = uCamera.viewToClip * uCamera.worldToView * positionLocal;
 }
 `;

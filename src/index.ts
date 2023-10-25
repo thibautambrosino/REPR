@@ -42,13 +42,13 @@ class Application {
   constructor(canvas: HTMLCanvasElement) {
     this._context = new GLContext(canvas);
     this._camera = new Camera();
-    vec3.set(this._camera.transform.position, 0.0, 0.0, -2.0);
+    vec3.set(this._camera.position, 0.0, 0.0, 2.0);
 
     this._geometry = new TriangleGeometry();
     this._uniforms = {
       'uMaterial.albedo': vec3.create(),
-      'uCamera.view': mat4.create(),
-      'uCamera.projection': mat4.create()
+      'uCamera.worldToView': mat4.create(),
+      'uCamera.viewToClip': mat4.create()
     };
 
     this._shader = new PBRShader();
@@ -106,8 +106,10 @@ class Application {
       this._context.gl.drawingBufferHeight;
 
     const camera = this._camera;
-    const view = camera.computeView();
-    const projection = camera.computeProjection(aspect);
+    const front = vec3.fromValues(0, 0, -1);
+    const up = vec3.fromValues(0, 1, 0);
+    camera.lookAt(front, up);
+    camera.computeProjection(aspect);
 
     const props = this._guiProperties;
 
@@ -119,14 +121,16 @@ class Application {
       props.albedo[2] / 255
     );
 
-    // Sets the viewProjection matrices.
+    // Sets the view projection matrices.
+    let worldToView = mat4.create();
+    mat4.invert(worldToView, this._camera.view);
     mat4.copy(
-      this._uniforms['uCamera.view'] as mat4,
-      view
+      this._uniforms['uCamera.worldToView'] as mat4,
+      worldToView
     );
     mat4.copy(
-      this._uniforms['uCamera.projection'] as mat4,
-      projection
+      this._uniforms['uCamera.viewToClip'] as mat4,
+      this._camera.projection
     );
 
     // **Note**: if you want to modify the position of the geometry, you will

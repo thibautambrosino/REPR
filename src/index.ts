@@ -42,11 +42,13 @@ class Application {
   constructor(canvas: HTMLCanvasElement) {
     this._context = new GLContext(canvas);
     this._camera = new Camera();
+    vec3.set(this._camera.transform.position, 0.0, 0.0, -2.0);
 
     this._geometry = new TriangleGeometry();
     this._uniforms = {
       'uMaterial.albedo': vec3.create(),
-      'uModel.localToProjection': mat4.create()
+      'uCamera.view': mat4.create(),
+      'uCamera.projection': mat4.create()
     };
 
     this._shader = new PBRShader();
@@ -104,9 +106,8 @@ class Application {
       this._context.gl.drawingBufferHeight;
 
     const camera = this._camera;
-    vec3.set(camera.transform.position, 0.0, 0.0, 2.0);
-    camera.setParameters(aspect);
-    camera.update();
+    const view = camera.computeView();
+    const projection = camera.computeProjection(aspect);
 
     const props = this._guiProperties;
 
@@ -117,13 +118,19 @@ class Application {
       props.albedo[1] / 255,
       props.albedo[2] / 255
     );
-    // Sets the viewProjection matrix.
-    // **Note**: if you want to modify the position of the geometry, you will
-    // need to take the matrix of the mesh into account here.
+
+    // Sets the viewProjection matrices.
     mat4.copy(
-      this._uniforms['uModel.localToProjection'] as mat4,
-      camera.localToProjection
+      this._uniforms['uCamera.view'] as mat4,
+      view
     );
+    mat4.copy(
+      this._uniforms['uCamera.projection'] as mat4,
+      projection
+    );
+
+    // **Note**: if you want to modify the position of the geometry, you will
+    // need to add a model matrix, corresponding to the mesh's matrix.
 
     // Draws the triangle.
     this._context.draw(this._geometry, this._shader, this._uniforms);

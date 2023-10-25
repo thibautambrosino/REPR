@@ -21,17 +21,18 @@ out vec3 vNormalWS;
  * Uniforms List
  */
 
-struct Model
+struct Camera
 {
-  mat4 localToProjection;
+  mat4 view;
+  mat4 projection;
 };
 
-uniform Model uModel;
+uniform Camera uCamera;
 
 void
 main()
 {
   vec4 positionLocal = vec4(in_position, 1.0);
-  gl_Position = uModel.localToProjection * positionLocal;
+  gl_Position = uCamera.projection * uCamera.view * positionLocal;
 }
 `;

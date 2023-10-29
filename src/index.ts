@@ -47,8 +47,7 @@ class Application {
     this._geometry = new TriangleGeometry();
     this._uniforms = {
       'uMaterial.albedo': vec3.create(),
-      'uCamera.worldToView': mat4.create(),
-      'uCamera.viewToClip': mat4.create()
+      'uCamera.WsToCs': mat4.create(),
     };
 
     this._shader = new PBRShader();
@@ -120,16 +119,14 @@ class Application {
       props.albedo[2] / 255
     );
 
-    // Sets the view projection matrices.
-    let worldToView = mat4.create();
-    mat4.invert(worldToView, this._camera.view);
+    // Sets the view projection matrix.
+    let WsToVs = mat4.create();
+    mat4.invert(WsToVs, this._camera.view);
+    let WsToCs = mat4.create();
+    mat4.multiply(WsToCs, this._camera.projection, WsToVs);
     mat4.copy(
-      this._uniforms['uCamera.worldToView'] as mat4,
-      worldToView
-    );
-    mat4.copy(
-      this._uniforms['uCamera.viewToClip'] as mat4,
-      this._camera.projection
+      this._uniforms['uCamera.WsToCs'] as mat4,
+      WsToCs
     );
 
     // **Note**: if you want to modify the position of the geometry, you will

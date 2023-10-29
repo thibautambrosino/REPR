@@ -7,7 +7,6 @@ struct Material
 {
   vec3 albedo;
 };
-
 uniform Material uMaterial;
 
 // From three.js

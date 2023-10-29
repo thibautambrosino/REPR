@@ -12,7 +12,7 @@ in vec3 in_normal;
  * Varyings.
  */
 
-out vec3 vNormalWS;
+out vec3 vWsNormal;
 #ifdef USE_UV
   out vec2 vUv;
 #endif // USE_UV
@@ -23,16 +23,14 @@ out vec3 vNormalWS;
 
 struct Camera
 {
-  mat4 worldToView;
-  mat4 viewToClip;
+  mat4 WsToCs; // World-Space to Clip-Space (proj * view)
 };
-
 uniform Camera uCamera;
 
 void
 main()
 {
   vec4 positionLocal = vec4(in_position, 1.0);
-  gl_Position = uCamera.viewToClip * uCamera.worldToView * positionLocal;
+  gl_Position = uCamera.WsToCs * positionLocal;
 }
 `;

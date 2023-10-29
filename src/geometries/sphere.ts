@@ -36,7 +36,7 @@ export class SphereGeometry extends Geometry {
    * @param horizontalSegments - Number of horizontal subdivision
    * @param verticalSegments - Number of vertical subdivision
    */
-  public constructor(radius = 1, horizontalSegments = 4, verticalSegments = 4) {
+  public constructor(radius = 1, horizontalSegments = 64, verticalSegments = 64) {
     const vertexCount = (horizontalSegments + 1) * (verticalSegments + 1);
 
     const positions = new Float32Array(vertexCount * 3);

@@ -105,11 +105,10 @@ class Application {
       this._context.gl.drawingBufferWidth /
       this._context.gl.drawingBufferHeight;
 
-    const camera = this._camera;
     const front = vec3.fromValues(0, 0, -1);
     const up = vec3.fromValues(0, 1, 0);
-    camera.lookAt(front, up);
-    camera.computeProjection(aspect);
+    this._camera.lookAt(front, up);
+    this._camera.computeProjection(aspect);
 
     const props = this._guiProperties;
 

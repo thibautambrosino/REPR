@@ -56,6 +56,12 @@ go step by step and to check intermediate results.
 It's important to ensure intermediate results are correct. Otherwise, you will spend time
 trying to figure out why your specular is off, when the issue might actually comes from a different part of the pipeline.
 
+### Warm up (0 points)
+This short part will help you discover the code. It will be used in the next section, so don't skip it.
+1. Draw a basic sphere with a simple color
+2. Draw the `normal` vector
+3. Draw the `viewDirection` vector
+
 ### Ponctual Lights (10 points)
 
 You can implement either directional lights or point lights (or both!). For better visual results,
@@ -64,11 +70,9 @@ I would advise you to go for point lights :)
 This is the steps I followed when implementing this subject, and I do recommend it
 to ensure every intermediate result is correct:
 
-1. Draw a basic sphere with a simple color
-2. Draw geometric properties, such as the `normal`, the `viewDirection` etc...
-3. Send simple light data to the shader, and display them
-4. Implement the Lambertian diffuse BRDF
-5. Implement the Cook-Torrance GGX specular BRDF
+1. Send simple light data to the shader (color, position or direction), and display them
+2. Implement the Lambertian diffuse BRDF
+3. Implement the Cook-Torrance GGX specular BRDF
 
 This is the kind of results you should get with 4 point lights:
 ![Example of results you should obtain with point lights](./screenshots/pointlights.jpg)

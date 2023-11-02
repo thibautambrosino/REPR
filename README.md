@@ -70,7 +70,7 @@ I would advise you to go for point lights :)
 This is the steps I followed when implementing this subject, and I do recommend it
 to ensure every intermediate result is correct:
 
-1. Send simple light data to the shader (color, position or direction), and display them
+1. Send simple light data to the shader (color, intensity, position or direction), and display them. The file `light.ts` already contains some of the code needed.
 2. Implement the Lambertian diffuse BRDF
 3. Implement the Cook-Torrance GGX specular BRDF
 

@@ -100,15 +100,6 @@ class Application {
     this._context.setDepthTest(true);
     // this._context.setCulling(WebGL2RenderingContext.BACK);
 
-    const aspect =
-      this._context.gl.drawingBufferWidth /
-      this._context.gl.drawingBufferHeight;
-
-    const front = vec3.fromValues(0, 0, -1);
-    const up = vec3.fromValues(0, 1, 0);
-    this._camera.lookAt(front, up);
-    this._camera.computeProjection(aspect);
-
     const props = this._guiProperties;
 
     // Set the color from the GUI into the uniform list.
@@ -120,14 +111,9 @@ class Application {
     );
 
     // Sets the view projection matrix.
-    let WsToVs = mat4.create();
-    mat4.invert(WsToVs, this._camera.view);
-    let WsToCs = mat4.create();
-    mat4.multiply(WsToCs, this._camera.projection, WsToVs);
-    mat4.copy(
-      this._uniforms['uCamera.WsToCs'] as mat4,
-      WsToCs
-    );
+    const aspect = this._context.gl.drawingBufferWidth / this._context.gl.drawingBufferHeight;
+    let WsToCs = this._uniforms['uCamera.WsToCs'] as mat4;
+    mat4.multiply(WsToCs, this._camera.computeProjection(aspect), this._camera.computeView());
 
     // **Note**: if you want to modify the position of the geometry, you will
     // need to add a model matrix, corresponding to the mesh's matrix.

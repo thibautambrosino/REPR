@@ -107,7 +107,7 @@ simultaneously, and to blend them together.
 
 The tasks can be summed up as:
 1. Load one of the  `specular` files provied in the folder `assets/env`
-2. Load the texture `assets/ggx-brdf-integrated.png` containing the precomputed BRDF
+2. Load the texture `assets/ggx-brdf-integrated.png` containing the precomputed BRDF. This texture uses sRGB color space, don't forget to remap to linear color space.
 3. Convert the reflected ray from cartesian to polar
 4. Offset the polar coordinates according to the roughness level
 5. Repeat step **2** and **3** for a second level

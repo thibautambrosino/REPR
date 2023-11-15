@@ -79,14 +79,7 @@ This is the kind of results you should get with 4 point lights:
 
 ### Image-Based Lighting Lookup
 
-For the Image-Based Lighting, the textures are encoded in **RGBM**. In order to map **RGBM** to **RGB**,
-you will need to find the formula somewhere. It should be a simple linear range remapping.
-
-Example:
-
-![Example of RGBM texture](./assets/env/Alexs_Apt_2k-diffuse-RGBM.png)
-
-The texture might look off to you, but it's because it's displayed as-is while it's encoded in RGBM.
+For the Image-Based Lighting, the textures are encoded in **RGBM**. In order to map **RGBM** to **RGB**, you will need to find the formula somewhere. It consists in a simple linear range remapping, with a constant range multiplier of 6.
 
 #### Image-Based Lighting: Diffuse (1 points)
 

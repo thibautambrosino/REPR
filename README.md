@@ -86,8 +86,7 @@ For the Image-Based Lighting, the textures are encoded in **RGBM**. In order to 
 The tasks to accomplish to lit your objects with the diffuse IBL are:
 1. Load one of the  `diffuse` files provied in the folder `assets/env`
 2. Use the geometry normal to sample the texture. Be careful here, the texture
-   is saved as a spherical projection. Thus, you will need to convert from cartesian
-   coordinates to polar coordinates
+   is saved as an equirectangular projection. Start by converting your cartesian coordinates to polar coordinates (azimuthal angle phi and polar angle theta). Then remap these coordinates in [0, 1] to use them as equirectangular UV coordinates.
 4. Apply the texture contribution to the indirect lighting
 
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-diffuse-RGBM.png`:

@@ -181,8 +181,8 @@ class Application {
 
     const dx = event.clientX - app._mouseCurrentPosition.x;
     const dy = event.clientY - app._mouseCurrentPosition.y;
-    const angleX = dy * 0.002;
-    const angleY = dx * 0.002;
+    const angleX = dy * app._camera.rotationSpeed;
+    const angleY = dx * app._camera.rotationSpeed;
     quat.rotateX(app._camera.rotation, app._camera.rotation, angleX);
     quat.rotateY(app._camera.rotation, app._camera.rotation, angleY);
 

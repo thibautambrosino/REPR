@@ -149,11 +149,9 @@ class Application {
    * Handle keyboard and mouse inputs to translate and rotate camera.
    */
   onKeyDown(event: KeyboardEvent) {
-    const speed = 0.2;
-
-    let forwardVec = vec3.fromValues(0.0, 0.0, -speed);
+    let forwardVec = vec3.fromValues(0.0, 0.0, -app._camera.speed);
     vec3.transformQuat(forwardVec, forwardVec, app._camera.rotation);
-    let rightVec = vec3.fromValues(speed, 0.0, 0.0);
+    let rightVec = vec3.fromValues(app._camera.speed, 0.0, 0.0);
     vec3.transformQuat(rightVec, rightVec, app._camera.rotation);
 
     if (event.key == 'z' || event.key == 'ArrowUp') {

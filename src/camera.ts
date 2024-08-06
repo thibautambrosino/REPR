@@ -6,10 +6,12 @@ import { mat4, vec3, quat } from 'gl-matrix';
 export class Camera {
   public position: vec3;
   public rotation: quat;
+  public speed: number;
 
   public constructor(posX: number, posY: number, posZ: number) {
     this.position = vec3.fromValues(posX, posY, posZ);
     this.rotation = quat.create();
+    this.speed = 0.3;
   }
 
   public computeView(): mat4 {

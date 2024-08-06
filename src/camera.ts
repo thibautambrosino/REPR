@@ -7,8 +7,8 @@ export class Camera {
   public position: vec3;
   public rotation: quat;
 
-  public constructor() {
-    this.position = vec3.create();
+  public constructor(posX: number, posY: number, posZ: number) {
+    this.position = vec3.fromValues(posX, posY, posZ);
     this.rotation = quat.create();
   }
 

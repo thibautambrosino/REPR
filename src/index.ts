@@ -1,7 +1,7 @@
 import { GUI } from 'dat.gui';
 import { mat4, vec3, quat } from 'gl-matrix';
 import { Camera } from './camera';
-import { TriangleGeometry } from './geometries/triangle';
+import { SphereGeometry } from './geometries/sphere';
 import { GLContext } from './gl';
 import { PBRShader } from './shader/pbr-shader';
 import { Texture, Texture2D } from './textures/texture';
@@ -17,48 +17,29 @@ interface GUIProperties {
  * @class Application
  */
 class Application {
-  /**
-   * Context used to draw to the canvas
-   *
-   * @private
-   */
-  private _context: GLContext;
-
+  private _context: GLContext; // Context used to draw to the canvas
   private _shader: PBRShader;
-  private _geometry: TriangleGeometry;
+  private _geometry: SphereGeometry;
   private _uniforms: Record<string, UniformType | Texture>;
-
   private _textureExample: Texture2D<HTMLElement> | null;
-
   private _camera: Camera;
-
   private _mouseClicked: boolean;
   private _mouseCurrentPosition: { x: number, y: number };
-
-  /**
-   * Object updated with the properties from the GUI
-   *
-   * @private
-   */
-  private _guiProperties: GUIProperties;
+  private _guiProperties: GUIProperties; // Object updated with the properties from the GUI
 
   constructor(canvas: HTMLCanvasElement) {
     this._context = new GLContext(canvas);
-    this._camera = new Camera();
-    vec3.set(this._camera.position, 0.0, 0.0, 2.0);
-
     this._mouseClicked = false;
     this._mouseCurrentPosition = { x: 0, y: 0 };
-
-    this._geometry = new TriangleGeometry();
-    this._uniforms = {
-      'uMaterial.albedo': vec3.create(),
-      'uCamera.WsToCs': mat4.create(),
-    };
-
+    this._camera = new Camera(0.0, 0.0, 18.0);
+    this._geometry = new SphereGeometry();
     this._shader = new PBRShader();
     this._textureExample = null;
-
+    this._uniforms = {
+      'uMaterial.albedo': vec3.create(),
+      'uModel.LsToWs': mat4.create(),
+      'uCamera.WsToCs': mat4.create(),
+    };
     this._guiProperties = {
       albedo: [255, 255, 255]
     };
@@ -111,7 +92,6 @@ class Application {
   render() {
     this._context.clear();
     this._context.setDepthTest(true);
-    // this._context.setCulling(WebGL2RenderingContext.BACK);
 
     const props = this._guiProperties;
 
@@ -123,26 +103,39 @@ class Application {
       props.albedo[2] / 255
     );
 
-    // Sets the view projection matrix.
+    // Set World-Space To Clip-Space transformation matrix (view projection).
     const aspect = this._context.gl.drawingBufferWidth / this._context.gl.drawingBufferHeight;
     let WsToCs = this._uniforms['uCamera.WsToCs'] as mat4;
     mat4.multiply(WsToCs, this._camera.computeProjection(aspect), this._camera.computeView());
 
-    // **Note**: if you want to modify the position of the geometry, you will
-    // need to add a model matrix, corresponding to the mesh's matrix.
+    // Draw the 5x5 grid of spheres
+    const rows = 5;
+    const columns = 5;
+    const spacing = this._geometry.radius * 2.5;
+    for (let r = 0; r < rows; ++r) {
+      for (let c = 0; c < columns; ++c) {
 
-    // Draws the triangle.
-    this._context.draw(this._geometry, this._shader, this._uniforms);
+        // Set Local-Space To World-Space transformation matrix
+        const WsSphereTranslation = vec3.set(
+          vec3.create(),
+          (c - columns * 0.5) * spacing + spacing * 0.5,
+          (r - rows * 0.5) * spacing + spacing * 0.5,
+          0.0
+        );
+        const LsToWs = this._uniforms["uModel.LsToWs"] as mat4;
+        mat4.fromTranslation(LsToWs, WsSphereTranslation);
+
+        // Draws the triangle.
+        this._context.draw(this._geometry, this._shader, this._uniforms);
+      }
+    }
   }
 
   /**
    * Creates a GUI floating on the upper right side of the page.
    *
-   * ## Note
-   *
    * You are free to do whatever you want with this GUI. It's useful to have
    * parameters you can dynamically change to see what happens.
-   *
    *
    * @private
    */
@@ -219,7 +212,6 @@ animate();
 /**
  * Handles resize.
  */
-
 const resizeObserver = new ResizeObserver((entries) => {
   if (entries.length > 0) {
     const entry = entries[0];

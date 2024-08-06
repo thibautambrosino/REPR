@@ -27,10 +27,16 @@ struct Camera
 };
 uniform Camera uCamera;
 
+struct Model
+{
+  mat4 LsToWs; // Local-Space to World-Space
+};
+uniform Model uModel;
+
 void
 main()
 {
   vec4 positionLocal = vec4(in_position, 1.0);
-  gl_Position = uCamera.WsToCs * positionLocal;
+  gl_Position = uCamera.WsToCs * uModel.LsToWs * positionLocal;
 }
 `;

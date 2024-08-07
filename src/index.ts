@@ -7,6 +7,7 @@ import { PBRShader } from './shader/pbr-shader';
 import { Texture, Texture2D } from './textures/texture';
 import { UniformType } from './types';
 
+// GUI elements
 interface GUIProperties {
   albedo: number[];
 }
@@ -23,14 +24,11 @@ class Application {
   private _uniforms: Record<string, UniformType | Texture>;
   private _textureExample: Texture2D<HTMLElement> | null;
   private _camera: Camera;
-  private _mouseClicked: boolean;
-  private _mouseCurrentPosition: { x: number, y: number };
   private _guiProperties: GUIProperties; // Object updated with the properties from the GUI
+
 
   constructor(canvas: HTMLCanvasElement) {
     this._context = new GLContext(canvas);
-    this._mouseClicked = false;
-    this._mouseCurrentPosition = { x: 0, y: 0 };
     this._camera = new Camera(0.0, 0.0, 18.0);
     this._geometry = new SphereGeometry();
     this._shader = new PBRShader();
@@ -40,11 +38,16 @@ class Application {
       'uModel.LsToWs': mat4.create(),
       'uCamera.WsToCs': mat4.create(),
     };
-    this._guiProperties = {
-      albedo: [255, 255, 255]
-    };
 
-    this._createGUI();
+    // Set GUI default values
+    this._guiProperties = {
+      albedo: [255, 255, 255],
+    };
+    // Creates a GUI floating on the upper right side of the page.
+    // You are free to do whatever you want with this GUI.
+    // It's useful to have parameters you can dynamically change to see what happens.
+    const gui = new GUI();
+    gui.addColor(this._guiProperties, 'albedo');
   }
 
   /**
@@ -64,12 +67,12 @@ class Application {
       // ```uniforms.myTexture = this._textureExample;```
     }
 
-    // Event handlers (mouse and keyboard)
-    canvas.addEventListener('keydown', this.onKeyDown, true);
-    canvas.addEventListener('pointerdown', this.onPointerDown, true);
-    canvas.addEventListener('pointermove', this.onPointerMove, true);
-    canvas.addEventListener('pointerup', this.onPointerUp, true);
-    canvas.addEventListener('pointerleave', this.onPointerUp, true);
+    // Handle keyboard and mouse inputs to translate and rotate camera.
+    canvas.addEventListener('keydown', this._camera.onKeyDown.bind(this._camera), true);
+    canvas.addEventListener('pointerdown', this._camera.onPointerDown.bind(this._camera), true);
+    canvas.addEventListener('pointermove', this._camera.onPointerMove.bind(this._camera), true);
+    canvas.addEventListener('pointerup', this._camera.onPointerUp.bind(this._camera), true);
+    canvas.addEventListener('pointerleave', this._camera.onPointerUp.bind(this._camera), true);
   }
 
   /**
@@ -125,75 +128,11 @@ class Application {
         const LsToWs = this._uniforms["uModel.LsToWs"] as mat4;
         mat4.fromTranslation(LsToWs, WsSphereTranslation);
 
-        // Draws the triangle.
+        // Draw the triangles
         this._context.draw(this._geometry, this._shader, this._uniforms);
       }
     }
   }
-
-  /**
-   * Creates a GUI floating on the upper right side of the page.
-   *
-   * You are free to do whatever you want with this GUI. It's useful to have
-   * parameters you can dynamically change to see what happens.
-   *
-   * @private
-   */
-  private _createGUI(): GUI {
-    const gui = new GUI();
-    gui.addColor(this._guiProperties, 'albedo');
-    return gui;
-  }
-
-  /**
-   * Handle keyboard and mouse inputs to translate and rotate camera.
-   */
-  onKeyDown(event: KeyboardEvent) {
-    let forwardVec = vec3.fromValues(0.0, 0.0, -app._camera.translationSpeed);
-    vec3.transformQuat(forwardVec, forwardVec, app._camera.rotation);
-    let rightVec = vec3.fromValues(app._camera.translationSpeed, 0.0, 0.0);
-    vec3.transformQuat(rightVec, rightVec, app._camera.rotation);
-
-    if (event.key == 'z' || event.key == 'ArrowUp') {
-      vec3.add(app._camera.position, app._camera.position, forwardVec);
-    }
-    else if (event.key == 's' || event.key == 'ArrowDown') {
-      vec3.add(app._camera.position, app._camera.position, vec3.negate(forwardVec, forwardVec));
-    }
-    else if (event.key == 'd' || event.key == 'ArrowRight') {
-      vec3.add(app._camera.position, app._camera.position, rightVec);
-    }
-    else if (event.key == 'q' || event.key == 'ArrowLeft') {
-      vec3.add(app._camera.position, app._camera.position, vec3.negate(rightVec, rightVec));
-    }
-  }
-
-  onPointerDown(event: MouseEvent) {
-    app._mouseCurrentPosition.x = event.clientX;
-    app._mouseCurrentPosition.y = event.clientY;
-    app._mouseClicked = true;
-  }
-
-  onPointerMove(event: MouseEvent) {
-    if (!app._mouseClicked) {
-      return;
-    }
-
-    const dx = event.clientX - app._mouseCurrentPosition.x;
-    const dy = event.clientY - app._mouseCurrentPosition.y;
-    const angleX = dy * app._camera.rotationSpeed;
-    const angleY = dx * app._camera.rotationSpeed;
-    quat.rotateX(app._camera.rotation, app._camera.rotation, angleX);
-    quat.rotateY(app._camera.rotation, app._camera.rotation, angleY);
-
-    app._mouseCurrentPosition.x = event.clientX;
-    app._mouseCurrentPosition.y = event.clientY;
-  }
-
-  onPointerUp(event: MouseEvent) {
-    app._mouseClicked = false;
-  }
-
 }
 
 const canvas = document.getElementById('main-canvas') as HTMLCanvasElement;

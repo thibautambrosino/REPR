@@ -1,5 +1,5 @@
 import { GUI } from 'dat.gui';
-import { mat4, vec3, quat } from 'gl-matrix';
+import { mat4, vec3 } from 'gl-matrix';
 import { Camera } from './camera';
 import { SphereGeometry } from './geometries/sphere';
 import { GLContext } from './gl';
@@ -98,15 +98,13 @@ class Application {
 
     const props = this._guiProperties;
 
-    // Set the color from the GUI into the uniform list.
-    vec3.set(
-      this._uniforms['uMaterial.albedo'] as vec3,
+    // Set the albedo uniform using the GUI value
+    this._uniforms['uMaterial.albedo'] = vec3.fromValues(
       props.albedo[0] / 255,
       props.albedo[1] / 255,
-      props.albedo[2] / 255
-    );
+      props.albedo[2] / 255);
 
-    // Set World-Space To Clip-Space transformation matrix (view projection).
+    // Set World-Space To Clip-Space transformation matrix (a.k.a view-projection).
     const aspect = this._context.gl.drawingBufferWidth / this._context.gl.drawingBufferHeight;
     let WsToCs = this._uniforms['uCamera.WsToCs'] as mat4;
     mat4.multiply(WsToCs, this._camera.computeProjection(aspect), this._camera.computeView());
@@ -118,9 +116,8 @@ class Application {
     for (let r = 0; r < rows; ++r) {
       for (let c = 0; c < columns; ++c) {
 
-        // Set Local-Space To World-Space transformation matrix
-        const WsSphereTranslation = vec3.set(
-          vec3.create(),
+        // Set Local-Space To World-Space transformation matrix (a.k.a model).
+        const WsSphereTranslation = vec3.fromValues(
           (c - columns * 0.5) * spacing + spacing * 0.5,
           (r - rows * 0.5) * spacing + spacing * 0.5,
           0.0

@@ -9,8 +9,6 @@ The goal of this project is to implement a PBR renderer. You are asked to implem
 * Due date: TODO
 * Format: TODO
 
-You will see that the grades can overflow **20 points**, and I will give it as-is to the school administration. Obviously, whether it's clamped or not in the end is out of my control.
-
 
 ## Installation
 After cloning the repository, install the dependencies using:

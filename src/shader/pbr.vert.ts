@@ -2,41 +2,35 @@ export default `
 
 precision highp float;
 
+// Attributes (per-vertex variables)
 in vec3 in_position;
 in vec3 in_normal;
 #ifdef USE_UV
   in vec2 in_uv;
-#endif // USE_UV
+#endif
 
-/**
- * Varyings.
- */
-
-out vec3 vWsNormal;
+// Varyings (per-fragment variables, interpolated on vertices)
+out vec3 vNormalWS;
 #ifdef USE_UV
   out vec2 vUv;
-#endif // USE_UV
+#endif
 
-/**
- * Uniforms List
- */
-
+// Uniforms (per-drawcall variables)
 struct Camera
 {
-  mat4 WsToCs; // World-Space to Clip-Space (proj * view)
+  mat4 WS_to_CS; // World-Space to Clip-Space (view * proj)
 };
 uniform Camera uCamera;
 
 struct Model
 {
-  mat4 LsToWs; // Local-Space to World-Space
+  mat4 LS_to_WS; // Local-Space to World-Space
 };
 uniform Model uModel;
 
-void
-main()
+void main()
 {
   vec4 positionLocal = vec4(in_position, 1.0);
-  gl_Position = uCamera.WsToCs * uModel.LsToWs * positionLocal;
+  gl_Position = uCamera.WS_to_CS * uModel.LS_to_WS * positionLocal;
 }
 `;

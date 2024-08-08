@@ -35,8 +35,8 @@ class Application {
     this._textureExample = null;
     this._uniforms = {
       'uMaterial.albedo': vec3.create(),
-      'uModel.LsToWs': mat4.create(),
-      'uCamera.WsToCs': mat4.create(),
+      'uModel.LS_to_WS': mat4.create(),
+      'uCamera.WS_to_CS': mat4.create(),
     };
 
     // Set GUI default values
@@ -104,10 +104,10 @@ class Application {
       props.albedo[1] / 255,
       props.albedo[2] / 255);
 
-    // Set World-Space To Clip-Space transformation matrix (a.k.a view-projection).
+    // Set World-Space to Clip-Space transformation matrix (a.k.a view-projection).
     const aspect = this._context.gl.drawingBufferWidth / this._context.gl.drawingBufferHeight;
-    let WsToCs = this._uniforms['uCamera.WsToCs'] as mat4;
-    mat4.multiply(WsToCs, this._camera.computeProjection(aspect), this._camera.computeView());
+    let WS_to_CS = this._uniforms['uCamera.WS_to_CS'] as mat4;
+    mat4.multiply(WS_to_CS, this._camera.computeProjection(aspect), this._camera.computeView());
 
     // Draw the 5x5 grid of spheres
     const rows = 5;
@@ -116,14 +116,14 @@ class Application {
     for (let r = 0; r < rows; ++r) {
       for (let c = 0; c < columns; ++c) {
 
-        // Set Local-Space To World-Space transformation matrix (a.k.a model).
+        // Set Local-Space to World-Space transformation matrix (a.k.a model).
         const WsSphereTranslation = vec3.fromValues(
           (c - columns * 0.5) * spacing + spacing * 0.5,
           (r - rows * 0.5) * spacing + spacing * 0.5,
           0.0
         );
-        const LsToWs = this._uniforms["uModel.LsToWs"] as mat4;
-        mat4.fromTranslation(LsToWs, WsSphereTranslation);
+        const LS_to_WS = this._uniforms["uModel.LS_to_WS"] as mat4;
+        mat4.fromTranslation(LS_to_WS, WsSphereTranslation);
 
         // Draw the triangles
         this._context.draw(this._geometry, this._shader, this._uniforms);

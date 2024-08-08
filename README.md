@@ -3,11 +3,6 @@ The goal of this project is to implement a PBR renderer. You are asked to implem
 * A Lambertian diffuse BRDF
 * A Cook-Torrance GGX specular BRDF
 
-To learn about:
-* The grading system, please reach the [Grading section](#grading)
-* The subject, please reach the [Assignment section](#assignment)
-* The provided code, please have a look at the [Provided Code section](#provided-code).
-
 
 ## Grading
 * Group size: **1**
@@ -37,9 +32,39 @@ The development server supports Hot-Reload, which means that when saving your co
 will automatically auto-reload with the latest changes.
 
 
+## Provided Code
+
+### Index
+The [index](./src/index.ts) is the entry point of your application. The game loop is started there
+and resources are initialized in the `Application` class.
+
+In this repository, I created a simple shader that sets a uniform color on a triangle. This sample
+will help you start to implement your PBR shader.
+
+### Context
+The [context](./src/gl.ts) is one of the most important. It abstracts WebGL calls and resources management.
+Without that, you would need to spend quite a bit of code to setup:
+* Geometries (Vertex Buffers)
+* Textures
+* Shaders
+* etc...
+
+I didn't want you to spend your time writing an abstraction, so I made one for you. If you want fancier features, please feel free to update it with your own changes.
+
+For the most curious ones, the file uses `WeakMap` (basically hash tables) to retrieve uploaded GL objects from your own instances (textures, geometries, etc...).
+
+### Shader
+The [Shader](./src/shader/shader.ts) just contains the two shaders (vertex and fragment) as strings.
+It also contains a dictionnary (`defines`) that can allow you to conditionnally compile code or not.
+
+When working on big rendering project, we often want several versions of a same shader with some differences.
+Using `#define`, we take advantage of the preproccessor to compile different variants.
+
+The values in the `defines` dictionnary will basically be preprended to your shader before compiling it.
+
+
 ## Tooling
-[Spector.js](https://chrome.google.com/webstore/detail/spectorjs/denbgaamihkadbghdceggmchnflmhpmk?hl=en) is a chrome extension 
-that will help you analyze data sent to webgl, visualize framebuffers, etc... The best debugging tool for WebGL!
+[Spector.js](https://chrome.google.com/webstore/detail/spectorjs/denbgaamihkadbghdceggmchnflmhpmk?hl=en) is a chrome extension that will help you analyze data sent to webgl, visualize framebuffers, etc... The best debugging tool for WebGL!
 
 
 ## Assignment
@@ -55,19 +80,17 @@ This short part will help you discover the code. It will be used in the next sec
 
 
 ### Direct Lighting (2 points)
+Implement point lights, use at least 2 in your scene.
+Send simple light data to the shader (color, intensity, position or direction), compute their attenuation and display them.
+The file `light.ts` already contains some of the code needed.
 
+In addition, you can also implement directional lights if you want.
 
+### Diffuse BRDF (2 points)
+Implement the Lambertian diffuse BRDF.
 
-### Ponctual Lights (10 points)
-You can implement either directional lights or point lights (or both!). For better visual results,
-I would advise you to go for point lights :)
-
-This is the steps I followed when implementing this subject, and I do recommend it
-to ensure every intermediate result is correct:
-
-1. Send simple light data to the shader (color, intensity, position or direction), and display them. The file `light.ts` already contains some of the code needed.
-2. Implement the Lambertian diffuse BRDF
-3. Implement the Cook-Torrance GGX specular BRDF
+### Specular BRDF (6 points)
+Implement the Cook-Torrance GGX specular BRDF.
 
 This is the kind of results you should get with 4 point lights:
 ![Example of results you should obtain with point lights](./screenshots/pointlights.jpg)
@@ -157,37 +180,3 @@ You can download some texture that would map well to a sphere, such as [those on
 Just like you did for the diffuse, you can generate the specular probe. This task is harder, but will definitely make you stronger.
 
 Please refer to the paper [Unreal paper](https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf) for the implementation. Don't hesitate to come see me during the lesson so I can give you a detailed explanation about what you have to do.
-
-
-## Provided Code
-
-### Index
-The [index](./src/index.ts) is the entry point of your application. The game loop is started there
-and resources are initialized in the `Application` class.
-
-In this repository, I created a simple shader that sets a uniform color on a triangle. This sample
-will help you start to implement your PBR shader.
-
-### Context
-The [context](./src/gl.ts) is one of the most important. It abstracts WebGL calls and resources management.
-Without that, you would need to spend quite a bit of code to setup:
-* Geometries (Vertex Buffers)
-* Textures
-* Shaders
-* etc...
-
-I didn't you to spend your time writing an abstraction, so I made one for you. If you want fancier features, please
-feel free to update it with your own changes.
-
-For the most curious ones, the file uses `WeakMap` (basically hash tables) to retrieve uploaded GL objects
-from your own instances (textures, geometries, etc...).
-
-
-### Shader
-The [Shader](./src/shader/shader.ts) just contains the two shaders (vertex and fragment) as strings.
-It also contains a dictionnary (`defines`) that can allow you to conditionnally compile code or not.
-
-When working on big rendering project, we often want several versions of a same shader with some differences.
-Using `#define`, we take advantage of the preproccessor to compile different variants.
-
-The values in the `defines` dictionnary will basically be preprended too your shader before compiling it.

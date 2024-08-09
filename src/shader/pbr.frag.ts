@@ -1,7 +1,7 @@
 export default `
 precision highp float;
 
-// Shader output
+// Fragment shader output
 out vec4 outFragColor;
 
 // Uniforms

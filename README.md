@@ -73,8 +73,12 @@ trying to figure out why your specular is off, when the issue might actually com
 
 ### Warm up (0 points)
 This short part will help you discover the code. It will be used in the next section, so don't skip it.
-1. Draw the `normal` vector
-2. Draw the `viewDirection` vector
+1. Draw the `NormalWS` vector (the fragment's surface normal in World-Space). This kind of vector is in the [-1, 1] range. To reinterpret it as a color, we usually remap to [0, 1].
+Here is an example of what you should see:
+![Expected result](./screenshots/NormalWS.jpg)
+2. Draw the `ViewDirectionWS` vector (the direction from the fragment to the camera, in World-Space). As for the normal, don't forget to remap it in [0, 1].
+Here is an example of what you should see:
+![Expected result](./screenshots/ViewDirectionWS.jpg)
 
 
 ### Direct Lighting (2 points)
@@ -84,32 +88,38 @@ The file `light.ts` already contains some of the code needed.
 
 In addition, you can also implement directional lights if you want.
 
-### Diffuse BRDF (2 points)
+### Tone mapping (1 point)
+Implement the Reinhard tone mapping to convert your HDR lighting to LDR.
+
+### Diffuse BRDF (1 point)
 Implement the Lambertian diffuse BRDF.
+
+This is the kind of results you should get with a directional light:
+![Expected result](./screenshots/Direct_Diffuse.jpg)
 
 ### Specular BRDF (6 points)
 Implement the Cook-Torrance GGX specular BRDF.
 
 This is the kind of results you should get with 4 point lights:
-![Example of results you should obtain with point lights](./screenshots/pointlights.jpg)
+![Expected result](./screenshots/Direct_DiffuseSpecular.jpg)
 
 
 ### Image-Based Lighting Lookup
 For the Image-Based Lighting, the textures are encoded in **RGBM**. In order to map **RGBM** to **RGB**, you will need to find the formula somewhere. It consists in a simple linear range remapping, with a constant range multiplier of 6.
 
 
-#### Image-Based Lighting: Diffuse (1 points)
+#### Image-Based Lighting: Diffuse (2 points)
 The tasks to accomplish to lit your objects with the diffuse IBL are:
-1. Load one of the  `diffuse` files provied in the folder `assets/env`
+1. Load one of the  `diffuse` files provided in the folder `assets/env`
 2. Use the geometry normal to sample the texture. Be careful here, the texture
    is saved as an [equirectangular projection](https://en.wikipedia.org/wiki/Equirectangular_projection). Start by converting your cartesian coordinates to polar coordinates using the given function `cartesianToPolar`. Then remap these coordinates to use them as equirectangular UV coordinates.
 4. Apply the texture contribution to the indirect lighting
 
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-diffuse-RGBM.png`:
-![Example of results you should obtain using only the diffuse IBL](./screenshots/ibl-diffuse.jpg)
+![Expected result](./screenshots/Indirect_Diffuse.jpg)
 
 
-#### Image-Based Lighting: Specular (2 points)
+#### Image-Based Lighting: Specular (3 points)
 For the specular IBL, the texture encodes different version of the environment
 for different roughness values. There is a total of **6** roughness levels, starting
 at the bottom of the texture.
@@ -130,16 +140,14 @@ The tasks can be summed up as:
 7. Apply the result to the rendering equation using the pre-computed BRDF
 
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-specular-RGBM.png`:
-![Example of results you should obtain using only the diffuse IBL](./screenshots/ibl-specular.jpg)
+![Expected result](./screenshots/Indirect_Specular.jpg)
 
 Now that you implemented both the diffuse and the specular IBL, take a look at the combined results:
-
-![Example of results you should obtain with both the diffuse and specular IBL](./screenshots/ibl-total.jpg)
+![Expected result](./screenshots/Indirect_DiffuseSpecular.jpg)
 
 
 ### Image-Based Lighting Generation
-For this project, you have worked with pre-computed data. Instead of using the asses from the repository,
-try to generate yourself the cached environment textures.
+For this project, you have worked with pre-computed data. Instead of using the assets from the repository, try to generate yourself the baked environment textures.
 
 
 #### Image-Based Lighting: Diffuse (5 points)

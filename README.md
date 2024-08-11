@@ -74,11 +74,12 @@ trying to figure out why your specular is off, when the issue might actually com
 ### Warm up (0 points)
 This short part will help you discover the code. It will be used in the next section, so don't skip it.
 1. Draw the `NormalWS` vector (the fragment's surface normal in World-Space). This kind of vector is in the [-1, 1] range. To reinterpret it as a color, we usually remap to [0, 1].
-Here is an example of what you should see:
-![Expected result](./screenshots/NormalWS.jpg)
 2. Draw the `ViewDirectionWS` vector (the direction from the fragment to the camera, in World-Space). As for the normal, don't forget to remap it in [0, 1].
+
 Here is an example of what you should see:
-![Expected result](./screenshots/ViewDirectionWS.jpg)
+| NormalWS | ViewDirectionWS |
+| :------: | :-------------: |
+| <img src="./screenshots/NormalWS.jpg" width=60% height=60% align="center">  | <img src="./screenshots/ViewDirectionWS.jpg" width=60% height=60% align="center">  |
 
 
 ### Direct Lighting (2 points)
@@ -95,13 +96,17 @@ Implement the Reinhard tone mapping to convert your HDR lighting to LDR.
 Implement the Lambertian diffuse BRDF.
 
 This is the kind of results you should get with a directional light:
-![Expected result](./screenshots/Direct_Diffuse.jpg)
+<p align="center">
+<img src="./screenshots/Direct_Diffuse.jpg" width=40% height=40% align="center">
+</p>
 
 ### Specular BRDF (6 points)
 Implement the Cook-Torrance GGX specular BRDF.
 
 This is the kind of results you should get with 4 point lights:
-![Expected result](./screenshots/Direct_DiffuseSpecular.jpg)
+<p align="center">
+<img src="./screenshots/Direct_DiffuseSpecular.jpg" width=40% height=40% align="center">
+</p>
 
 
 ### Image-Based Lighting Lookup
@@ -116,7 +121,9 @@ The tasks to accomplish to lit your objects with the diffuse IBL are:
 4. Apply the texture contribution to the indirect lighting
 
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-diffuse-RGBM.png`:
-![Expected result](./screenshots/Indirect_Diffuse.jpg)
+<p align="center">
+<img src="./screenshots/Indirect_Diffuse.jpg" width=40% height=40% align="center">
+</p>
 
 
 #### Image-Based Lighting: Specular (3 points)
@@ -140,10 +147,14 @@ The tasks can be summed up as:
 7. Apply the result to the rendering equation using the pre-computed BRDF
 
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-specular-RGBM.png`:
-![Expected result](./screenshots/Indirect_Specular.jpg)
+<p align="center">
+<img src="./screenshots/Indirect_Specular.jpg" width=40% height=40% align="center">
+</p>
 
 Now that you implemented both the diffuse and the specular IBL, take a look at the combined results:
-![Expected result](./screenshots/Indirect_DiffuseSpecular.jpg)
+<p align="center">
+<img src="./screenshots/Indirect_DiffuseSpecular.jpg" width=40% height=40% align="center">
+</p>
 
 
 ### Image-Based Lighting Generation

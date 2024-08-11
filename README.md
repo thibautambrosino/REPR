@@ -153,7 +153,7 @@ This is the kind of results you should get with the diffuse texture `Alexs_Apt_2
 For the specular IBL, the texture encodes different version of the environment for different roughness values. There is a total of **6** roughness levels. The lowest roughness level is placed at the bottom of the texture, and occupies 50% of the total height (but 100% of the width). Each level is **half the size** of the previous one.
 Here is a visual representation:
 <p align="center">
-<img src="./screenshots/SpecEnvSchema" width=50% height=50%>
+<img src="./screenshots/SpecEnvSchema.jpg" width=50% height=50%>
 </p>
 
 Thus, you will need to deduce the correct UV coordinates from the roughness value.

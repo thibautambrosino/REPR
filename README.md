@@ -6,7 +6,7 @@ The goal of this project is to implement a PBR renderer. You are asked to implem
 
 ## Grading
 * Group size: **1**
-* Due date: TODO
+* Due date: 17/10/2024, 23h42
 * Format: TODO
 
 
@@ -79,7 +79,7 @@ This short part will help you discover the code. It will be used in the next sec
 Here is an example of what you should see:
 | NormalWS | ViewDirectionWS |
 | :------: | :-------------: |
-| <img src="./screenshots/NormalWS.jpg" width=60% height=60% align="center">  | <img src="./screenshots/ViewDirectionWS.jpg" width=60% height=60% align="center">  |
+| <img src="./screenshots/NormalWS.jpg" width=60% height=60%>  | <img src="./screenshots/ViewDirectionWS.jpg" width=60% height=60%>  |
 
 
 ### Direct Lighting (2 points)
@@ -89,23 +89,28 @@ The file `light.ts` already contains some of the code needed.
 
 In addition, you can also implement directional lights if you want.
 
+
 ### Tone mapping (1 point)
 Implement the Reinhard tone mapping to convert your HDR lighting to LDR.
+All the screenshot examples following this exercise are using the Reinhard tone mapping.
+However, for better-looking results, I would advise implementing ACES instead.
+
 
 ### Diffuse BRDF (1 point)
 Implement the Lambertian diffuse BRDF.
 
 This is the kind of results you should get with a directional light:
 <p align="center">
-<img src="./screenshots/Direct_Diffuse.jpg" width=40% height=40% align="center">
+<img src="./screenshots/Direct_Diffuse.jpg" width=50% height=50%>
 </p>
+
 
 ### Specular BRDF (6 points)
 Implement the Cook-Torrance GGX specular BRDF.
 
 This is the kind of results you should get with 4 point lights:
 <p align="center">
-<img src="./screenshots/Direct_DiffuseSpecular.jpg" width=40% height=40% align="center">
+<img src="./screenshots/Direct_DiffuseSpecular.jpg" width=50% height=50%>
 </p>
 
 
@@ -122,7 +127,7 @@ The tasks to accomplish to lit your objects with the diffuse IBL are:
 
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-diffuse-RGBM.png`:
 <p align="center">
-<img src="./screenshots/Indirect_Diffuse.jpg" width=40% height=40% align="center">
+<img src="./screenshots/Indirect_Diffuse.jpg" width=50% height=50%>
 </p>
 
 
@@ -148,12 +153,12 @@ The tasks can be summed up as:
 
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-specular-RGBM.png`:
 <p align="center">
-<img src="./screenshots/Indirect_Specular.jpg" width=40% height=40% align="center">
+<img src="./screenshots/Indirect_Specular.jpg" width=50% height=50%>
 </p>
 
 Now that you implemented both the diffuse and the specular IBL, take a look at the combined results:
 <p align="center">
-<img src="./screenshots/Indirect_DiffuseSpecular.jpg" width=40% height=40% align="center">
+<img src="./screenshots/Indirect_DiffuseSpecular.jpg" width=50% height=50%>
 </p>
 
 

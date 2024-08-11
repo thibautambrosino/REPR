@@ -114,16 +114,34 @@ This is the kind of results you should get with 4 point lights:
 </p>
 
 
-### Image-Based Lighting Lookup
-For the Image-Based Lighting, the textures are encoded in **RGBM**. In order to map **RGBM** to **RGB**, you will need to find the formula somewhere. It consists in a simple linear range remapping, with a constant range multiplier of 6.
+### Image-Based Lighting
+For the Image-Based Lighting, the given textures are encoded in **RGBM** (Red, Green, Blue, Multiplier). It allows to encode HDR colors using only 8 bits per channel (through a bit of quantization). A naive floating-point encoding would use 32 bits per channel, which means 4 times more memory used on disk and VRAM. To store the multiplier channel on 8 bits too, we use a constant range multiplier of 6.
+
+Floating-point compression is a wide subject which I encourage you to [read more about](https://www.khronos.org/opengl/wiki/Small_Float_Formats). However this is not our topic here, so you can use the following function in order to map **RGBM** values to **RGB**:
+```glsl
+vec3 RGBMDecode(vec4 rgbm) {
+  return 6.0 * rgbm.rgb * rgbm.a;
+}
+```
 
 
 #### Image-Based Lighting: Diffuse (2 points)
 The tasks to accomplish to lit your objects with the diffuse IBL are:
 1. Load one of the  `diffuse` files provided in the folder `assets/env`
 2. Use the geometry normal to sample the texture. Be careful here, the texture
-   is saved as an [equirectangular projection](https://en.wikipedia.org/wiki/Equirectangular_projection). Start by converting your cartesian coordinates to polar coordinates using the given function `cartesianToPolar`. Then remap these coordinates to use them as equirectangular UV coordinates.
+   is saved as an [equirectangular projection](https://en.wikipedia.org/wiki/Equirectangular_projection). Start by converting your cartesian coordinates to polar coordinates. Then remap these coordinates to use them as equirectangular UV coordinates.
 4. Apply the texture contribution to the indirect lighting
+
+To convert a unit cartesian vector to polar coordinates, use the following function:
+```glsl
+vec2 cartesianToPolar(vec3 cartesian) {
+    // Compute azimuthal angle, in [-PI, PI]
+    float phi = atan(cartesian.z, cartesian.x);
+    // Compute polar angle, in [-PI/2, PI/2]
+    float theta = asin(cartesian.y);
+    return vec2(phi, theta);
+}
+```
 
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-diffuse-RGBM.png`:
 <p align="center">
@@ -132,23 +150,19 @@ This is the kind of results you should get with the diffuse texture `Alexs_Apt_2
 
 
 #### Image-Based Lighting: Specular (3 points)
-For the specular IBL, the texture encodes different version of the environment
-for different roughness values. There is a total of **6** roughness levels, starting
-at the bottom of the texture.
+For the specular IBL, the texture encodes different version of the environment for different roughness values. There is a total of **6** roughness levels, starting at the bottom of the texture.
 
-Each level is **half the size** of the previous one. Thus, you will need to
-compute the good position of the UV from the roughness value.
+Each level is **half the size** of the previous one. Thus, you will need to compute the good position of the UV from the roughness value.
 
-In order to get proper blending, you are advised to sample two roughness levels
-simultaneously, and to blend them together.
+In order to get proper blending, you are advised to sample two roughness levels simultaneously, and to blend them together.
 
 The tasks can be summed up as:
-1. Load one of the  `specular` files provied in the folder `assets/env`
-2. Load the texture `assets/ggx-brdf-integrated.png` containing the precomputed BRDF. This texture uses sRGB color space, don't forget to remap to linear color space.
-3. Convert the reflected ray from cartesian to polar
-4. Offset the polar coordinates according to the roughness level
-5. Repeat step **2** and **3** for a second level
-6. Fetch both levels and blend them together according to how far between the two the sample was
+1. Load one of the `specular` files provided in the folder `assets/env`
+2. Convert the reflected ray from cartesian to polar
+3. Offset the polar coordinates according to the roughness level
+4. Repeat steps **2** and **3** for a second level
+5. Fetch both levels and blend them together according to how far between the two the sample was
+6. Load the texture `assets/ggx-brdf-integrated.png` containing the precomputed BRDF. This texture uses sRGB color space, don't forget to remap to linear color space.
 7. Apply the result to the rendering equation using the pre-computed BRDF
 
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-specular-RGBM.png`:
@@ -162,14 +176,10 @@ Now that you implemented both the diffuse and the specular IBL, take a look at t
 </p>
 
 
-### Image-Based Lighting Generation
-For this project, you have worked with pre-computed data. Instead of using the assets from the repository, try to generate yourself the baked environment textures.
+#### Image-Based Lighting: Diffuse Generation (5 points)
+Until now, you have worked with pre-computed IBL data. Instead of using the assets from the repository, try to generate yourself the baked environment textures.
 
-
-#### Image-Based Lighting: Diffuse (5 points)
-> Careful: Compute shaders aren't available in WebGL.
-
-In this steps, you are asked to write a compute / fragment shader to generate the convoluted diffuse. This should obviouly done only once. You can do it once when your application is starting up. A lag of a few milliseconds might occur, which is totally fine.
+In this steps, you are asked to write a fragment shader (compute shaders are not available in WebGL) to generate the convoluted diffuse. This should be obviously done only once. You can do it once when your application is starting up. A lag of a few milliseconds might occur, which is totally fine.
 
 Steps:
 1. Create a framebuffer
@@ -196,9 +206,7 @@ PBR is meaningless without carefully authored textures bringing complexity to ma
 You can download some texture that would map well to a sphere, such as [those ones](http://freepbr.com/materials/rusted-iron-pbr-metal-material-alt/).
 
 
-### Image-Based Lighting Generation
-
-#### Specular (8 points)
+#### Image-Based Lighting: Specular Generation (8 points)
 Just like you did for the diffuse, you can generate the specular probe. This task is harder, but will definitely make you stronger.
 
 Please refer to the paper [Unreal paper](https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf) for the implementation. Don't hesitate to come see me during the lesson so I can give you a detailed explanation about what you have to do.

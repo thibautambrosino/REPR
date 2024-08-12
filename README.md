@@ -183,7 +183,7 @@ Now that you implemented both the diffuse and the specular IBL, take a look at t
 #### Image-Based Lighting: Diffuse Generation (5 points)
 Until now, you have worked with pre-computed IBL data. Instead of using the assets from the repository, try to generate yourself the baked environment textures.
 
-In this steps, you are asked to write a fragment shader (compute shaders are not available in WebGL) to generate the convoluted diffuse. This should be obviously done only once. You can do it once when your application is starting up. A lag of a few milliseconds might occur, which is totally fine.
+In this steps, you are asked to write a fragment shader (compute shaders are not available in WebGL) to generate the convoluted diffuse. Obviously, this should be done only once. You can do it when your application is starting up. A lag of a few milliseconds might occur, which is totally fine.
 
 Steps:
 1. Create a framebuffer

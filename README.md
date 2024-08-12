@@ -93,7 +93,7 @@ In addition, you can also implement directional lights if you want.
 ### Tone mapping (1 point)
 Implement the Reinhard tone mapping to convert your HDR lighting to LDR.
 All the screenshot examples following this exercise are using the Reinhard tone mapping.
-However, for better-looking results, I would advise implementing ACES instead.
+However, for better-looking results, I would advise implementing [ACES](https://knarkowicz.wordpress.com/2016/01/06/aces-filmic-tone-mapping-curve/) instead.
 
 
 ### Diffuse BRDF (1 point)

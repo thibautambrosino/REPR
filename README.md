@@ -128,20 +128,22 @@ vec3 RGBMDecode(vec4 rgbm) {
 #### Image-Based Lighting: Diffuse (2 points)
 The tasks to accomplish to lit your objects with the diffuse IBL are:
 1. Load one of the  `diffuse` files provided in the folder `assets/env`
-2. Use the geometry normal to sample the texture. Be careful here, the texture
-   is saved as an [equirectangular projection](https://en.wikipedia.org/wiki/Equirectangular_projection). Start by converting your cartesian coordinates to polar coordinates. Then remap these coordinates to use them as equirectangular UV coordinates.
-4. Apply the texture contribution to the indirect lighting
-
-To convert a unit cartesian vector to polar coordinates, use the following function:
-```glsl
-vec2 cartesianToPolar(vec3 cartesian) {
-    // Compute azimuthal angle, in [-PI, PI]
-    float phi = atan(cartesian.z, cartesian.x);
-    // Compute polar angle, in [-PI/2, PI/2]
-    float theta = asin(cartesian.y);
-    return vec2(phi, theta);
-}
-```
+2. Use the geometry normal to sample the texture. Be careful here, the texture is saved as an [equirectangular projection](https://en.wikipedia.org/wiki/Equirectangular_projection).
+   1. Start by converting your normal from cartesian coordinates to polar coordinates, using the following function:
+      ```glsl
+      vec2 cartesianToPolar(vec3 cartesian) {
+          // Compute azimuthal angle, in [-PI, PI]
+          float phi = atan(cartesian.z, cartesian.x);
+          // Compute polar angle, in [-PI/2, PI/2]
+          float theta = asin(cartesian.y);
+          return vec2(phi, theta);
+      }
+      ```
+   2. Obtaining equirectangular UV coordinates from polar coordinates is easy, you only need to remap from `([-PI, PI], [-PI/2, PI/2])` to `([0, 1], [0, 1])`.
+      | Polar coordinates | UV coordinates |
+      | :---------------: | :------------: |
+      | <img src="./screenshots/CoordinatesPolar.jpg"> | <img src="./screenshots/CoordinatesUV.jpg"> |
+3. Compute the indirect diffuse BRDF using this irradiance
 
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-diffuse-RGBM.png`:
 <p align="center">

@@ -163,7 +163,7 @@ Thus, you will need to deduce the correct UV coordinates from the roughness valu
 In order to get proper blending, you are advised to sample two roughness levels simultaneously, and to blend them together.
 
 The tasks can be summed up as:
-1. Load one of the `specular` files provided in the folder `assets/env`
+1. Load one of the specular files provided in the folder `assets/env`
 2. Convert the reflected ray from cartesian to polar
 3. Offset the polar coordinates according to the roughness level
 4. Repeat steps **2** and **3** for a second level

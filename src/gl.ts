@@ -296,10 +296,10 @@ export class GLContext {
    * @param texture - The [[Texture]] to attach
    */
   public setFramebufferTexture(texture: Texture) {
-    // Bind the texture as the output of the framebuffer
     let envDiffuseTextureObject = this._textures.get(texture)?.glObject;
     if (envDiffuseTextureObject === undefined) {
-      throw new Error('Texture not found');
+      console.error('Attempting to attach a non-existing texture.');
+      return;
     }
     this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_2D, envDiffuseTextureObject, 0);
   }

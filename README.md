@@ -200,7 +200,7 @@ Steps:
 8. Use this result in your PBR shader.
 
 I provided a few RGBM environment textures [on this drive](https://drive.google.com/drive/folders/1A725vJemn-aw1YuieIBqt-ST0Tae9Egp?usp=sharing).
-Alternatively you can find IBL textures online (on [Poly Haven](https://polyhaven.com/hdris) for example). The `HDRtoRGBM.py` script will help you to convert them from `.hdr` to RGBM `.png`.
+Alternatively you can find IBL textures online (on [Poly Haven](https://polyhaven.com/hdris) for example). The `HDRtoRGBM.py` script will help you converting them from `.hdr` to RGBM `.png`.
 
 
 ## Bonus

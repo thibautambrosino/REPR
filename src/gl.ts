@@ -12,7 +12,7 @@ import { PixelArray, UniformType } from './types';
  *
  * ## Note
  *
- * This abstraction if **far** from perfect. Making a really good abstraction
+ * This abstraction is **far** from perfect. Making a really good abstraction
  * is anyway not the subject here, and would be a really time consuming job.
  * A lot of errors aren't handled, and some corner cases are clearly not
  * handled.
@@ -75,15 +75,22 @@ export class GLContext {
 
     this._textureUnitSlot = 0;
 
-    this.resize();
+    this.resetViewport();
   }
 
   /**
-   * Resizes the GL viewport to match the main framebuffer size
+   * Set the GL viewport to match the main framebuffer size
    */
-  public resize(): void {
+  public resetViewport(): void {
     const gl = this._gl;
     gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+  }
+
+  /**
+   * Set the GL viewport width and height
+   */
+  public setViewport(width: number, height: number): void {
+    this._gl.viewport(0, 0, width, height);
   }
 
   /**
@@ -281,6 +288,20 @@ export class GLContext {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, texture.wrapS);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, texture.wrapT);
     this._textures.set(texture, { glObject });
+  }
+
+  /**
+   * Attach a texture as the color output of the currently bound framebuffer
+   *
+   * @param texture - The [[Texture]] to attach
+   */
+  public setFramebufferTexture(texture: Texture) {
+    // Bind the texture as the output of the framebuffer
+    let envDiffuseTextureObject = this._textures.get(texture)?.glObject;
+    if (envDiffuseTextureObject === undefined) {
+      throw new Error('Texture not found');
+    }
+    this._gl.framebufferTexture2D(this._gl.FRAMEBUFFER, this._gl.COLOR_ATTACHMENT0, this._gl.TEXTURE_2D, envDiffuseTextureObject, 0);
   }
 
   /**

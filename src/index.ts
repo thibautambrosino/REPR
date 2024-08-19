@@ -86,7 +86,7 @@ class Application {
    * Called when the canvas size changes.
    */
   resize() {
-    this._context.resize();
+    this._context.resetViewport();
   }
 
   /**

@@ -127,7 +127,7 @@ vec3 RGBMDecode(vec4 rgbm) {
 
 #### Image-Based Lighting: Diffuse (2 points)
 The tasks to accomplish to lit your objects with the diffuse IBL are:
-1. Load one of the  `diffuse` files provided in the folder `assets/env`
+1. Load one of the diffuse files provided in the folder `assets/env`
 2. Use the geometry normal to sample the texture. Be careful here, the texture is saved as an [equirectangular projection](https://en.wikipedia.org/wiki/Equirectangular_projection).
    1. Start by converting your normal from cartesian coordinates to polar coordinates, using the following function:
       ```glsl

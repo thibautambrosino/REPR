@@ -188,11 +188,17 @@ Until now, you have worked with pre-computed IBL data. Instead of using the asse
 In this steps, you are asked to write a fragment shader (compute shaders are not available in WebGL) to generate the convoluted diffuse. Obviously, this should be done only once. You can do it when your application is starting up. A lag of a few milliseconds might occur, which is totally fine.
 
 Steps:
-1. Create a framebuffer
-2. Create a texture
-3. Attach the texture to the framebuffer
-4. Create a shader that will convolute the environment diffuse and write it to the texture
-5. Use this result in your PBR shader
+1. Create a new shader that will convolute the environment diffuse.
+2. Load the unfiltered environment texture in a `Texture2D<HTMLElement>` and upload it to the GPU.
+3. Create a `Texture2D<PixelArray>` that will store the convolution result, and upload it to the GPU.
+4. Create a framebuffer and bind it. Attach your created texture as the color output, using `setFramebufferTexture`.
+5. Set the viewport correctly.
+6. Launch a drawcall. The process should be executed in a fullscreen manner, using a triangle or a plane.
+7. Reset the viewport and the bound framebuffer.
+8. Use this result in your PBR shader.
+
+I provided a few RGBM environment textures [on this drive](https://drive.google.com/drive/folders/1A725vJemn-aw1YuieIBqt-ST0Tae9Egp?usp=sharing).
+Alternatively you can find IBL textures online (on [Poly Haven](https://polyhaven.com/hdris) for example). The `HDRtoRGBM.py` script will help you to convert them from `.hdr` to RGBM `.png`.
 
 
 ## Bonus

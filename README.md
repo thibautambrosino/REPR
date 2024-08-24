@@ -68,7 +68,7 @@ The values in the `defines` dictionnary will basically be preprended to your sha
 ## Assignment
 You are free to proceed the way you want. However, I would advise you to
 go step by step and ensure intermediate results are correct. Otherwise, you will spend time
-trying to figure out why your specular is off, when the issue might actually comes from a different part of the pipeline.
+trying to figure out why your specular is off, when the issue might actually come from a different part of the pipeline.
 
 
 ### Warm up (0 points)

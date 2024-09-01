@@ -7,7 +7,7 @@ The goal of this project is to implement a PBR renderer. You are asked to implem
 ## Grading
 * Group size: **1**
 * Due date: 17/10/2024, 23h42
-* Format: TODO
+* Format: `zip` of the entire project, dropped on Moodle
 
 
 ## Installation

@@ -32,6 +32,11 @@ will automatically auto-reload with the latest changes.
 
 ## Provided Code
 
+### WebGL2
+I chose WebGL2 as the rendering API for this project. It is similar to OpenGL and the most common choice to render things on the web.
+
+Most of the code you will write in this project is API-agnostic, so you shouldn't have to worry about it. However, if you have any trouble with it I suggest looking for answers in [their great documentation](https://webgl2fundamentals.org/webgl/lessons/webgl-getting-webgl2.html).  
+
 ### Index
 The [index](./src/index.ts) is the entry point of your application. The game loop is started there
 and resources are initialized in the `Application` class.

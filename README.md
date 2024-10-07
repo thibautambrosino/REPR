@@ -134,9 +134,9 @@ vec3 RGBMDecode(vec4 rgbm) {
 The tasks to accomplish to lit your objects with the diffuse IBL are:
 1. Load one of the diffuse files provided in the folder `assets/env`
 2. Use the geometry normal to sample the texture. Be careful here, the texture is saved as an [equirectangular projection](https://en.wikipedia.org/wiki/Equirectangular_projection).
-   1. Start by converting your normal from cartesian coordinates to polar coordinates, using the following function:
+   1. Start by converting your normal from cartesian coordinates to spherical coordinates, using the following function:
       ```glsl
-      vec2 cartesianToPolar(vec3 cartesian) {
+      vec2 cartesianToSpherical(vec3 cartesian) {
           // Compute azimuthal angle, in [-PI, PI]
           float phi = atan(cartesian.z, cartesian.x);
           // Compute polar angle, in [-PI/2, PI/2]
@@ -144,9 +144,9 @@ The tasks to accomplish to lit your objects with the diffuse IBL are:
           return vec2(phi, theta);
       }
       ```
-   2. Obtaining equirectangular UV coordinates from polar coordinates is easy, you only need to remap from `([-PI, PI], [-PI/2, PI/2])` to `([0, 1], [0, 1])`.
-      | Polar coordinates | UV coordinates |
-      | :---------------: | :------------: |
+   2. Obtaining equirectangular UV coordinates from spherical coordinates is easy, you only need to remap from `([-PI, PI], [-PI/2, PI/2])` to `([0, 1], [0, 1])`.
+      | Spherical coordinates | UV coordinates |
+      | :-------------------: | :------------: |
       | <img src="./screenshots/CoordinatesPolar.jpg"> | <img src="./screenshots/CoordinatesUV.jpg"> |
 3. Compute the indirect diffuse BRDF using this irradiance
 
@@ -169,8 +169,8 @@ In order to get proper blending, you are advised to sample two roughness levels 
 
 The tasks can be summed up as:
 1. Load one of the specular files provided in the folder `assets/env`
-2. Convert the reflected ray from cartesian to polar
-3. Offset the polar coordinates according to the roughness level
+2. Convert the reflected ray from cartesian to spherical
+3. Offset the spherical coordinates according to the roughness level
 4. Repeat steps **2** and **3** for a second level
 5. Fetch both levels and blend them together according to how far between the two the sample was
 6. Load the texture `assets/ggx-brdf-integrated.png` containing the precomputed BRDF. This texture uses sRGB color space, don't forget to remap to linear color space.

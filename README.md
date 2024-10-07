@@ -147,7 +147,7 @@ The tasks to accomplish to lit your objects with the diffuse IBL are:
    2. Obtaining equirectangular UV coordinates from spherical coordinates is easy, you only need to remap from `([-PI, PI], [-PI/2, PI/2])` to `([0, 1], [0, 1])`.
       | Spherical coordinates | UV coordinates |
       | :-------------------: | :------------: |
-      | <img src="./screenshots/CoordinatesPolar.jpg"> | <img src="./screenshots/CoordinatesUV.jpg"> |
+      | <img src="./screenshots/CoordinatesSpherical.jpg"> | <img src="./screenshots/CoordinatesUV.jpg"> |
 3. Compute the indirect diffuse BRDF using this irradiance
 
 This is the kind of results you should get with the diffuse texture `Alexs_Apt_2k-diffuse-RGBM.png`:

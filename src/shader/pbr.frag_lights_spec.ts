@@ -45,7 +45,7 @@ void main()
   vec3 color = vec3(0.0);
   vec3 normal = normalize(vNormalWS);
   vec3 viewDir = normalize(vViewDirWS);
-
+  float pi = 3.14159265359;
 
   for(int i=0; i<10; i++) {
     // vec3 lightDir = normalize(-uLights[i].position);  Directional lights
@@ -54,8 +54,31 @@ void main()
     float attenuation = 1.0 / (dist * dist);
 
     float NdotL = max(dot(normal, lightDir), 0.0);
+    vec3 metalnessCoef = 1 - uMaterial.metalness;
 
-    vec3 diffuseLobe = NdotL * (albedo / 3.14159265359);
+    vec3 diffuseLobe = NdotL * (albedo / pi);
+    diffuseLobe  = mix(metalnessCoef, diffuseLobe, NdotL);
+
+    vec3 h = normalize(lightDir + viewDir);
+
+    vec3 D = pow(uMaterial.roughness,2) / pi * pow(pow(normal*h,2)*((pow(uMaterial.roughness,2) - 1) + 1),2);
+
+    """
+    NdotV = max(dot(normal, viewDir), 0.0);
+
+    fr = (1-ks)*fd + ks*fs
+
+    fd = diffuseLobe
+    fs = D*F*G / 4*NdotL*(NdotV)
+
+    ks = uMaterau
+    vec3 h = normalize(lightDir + viewDir);
+    vec3 k = pow(uMaterial.roughness + 1, 2) / 8
+    HdotV = max(dot(h, viewDir), 0.0);
+    D = pow(uMaterial.roughness,2) / pi * pow(pow(normal*h,2)*((pow(uMaterial.roughness,2) - 1) + 1),2)
+    F = uMaterial.f0 + (1- uMaterial.f0)*pow(1-HdotV,5)
+    G = (NdotL / (NdotL * (1-k)+k)) * (NdotV / (NdotV * (1-k)+k))
+    """
 
     color += uLights[i].color * diffuseLobe * uLights[i].intensity * attenuation;
   }

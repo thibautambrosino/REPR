@@ -120,13 +120,13 @@ class Application {
 
     const pointLight1 = new PointLight();
     pointLight1.setColorRGB(255.0, 0.0, 0.0);
-    pointLight1.setPosition(10.0, 10.0, 0.0);
-    pointLight1.setIntensity(10.0);
+    pointLight1.setPosition(1.5, 1.5, 2.0);
+    pointLight1.setIntensity(0.5);
 
     const pointLight2 = new PointLight();
     pointLight2.setColorRGB(0.0, 255.0, 0.0);
-    pointLight2.setPosition(-10.0, -10.0, 0.0);
-    pointLight2.setIntensity(5.0);
+    pointLight2.setPosition(-1.5, -1.5, 2.0);
+    pointLight2.setIntensity(0.5);
 
     const DLights = [
       directionalLight1
@@ -159,9 +159,12 @@ class Application {
         const LS_to_WS = this._uniforms["uModel.LS_to_WS"] as mat4;
         mat4.fromTranslation(LS_to_WS, WsSphereTranslation);
 
+        this._uniforms[`uMaterial[${c}].metalness`] = 1 - (0.2 * c);
+
         // Draw the triangles
         this._context.draw(this._geometry, this._shader, this._uniforms);
       }
+      this._uniforms[`uMaterial[${r}].roughness`] = 1 - (0.2 * r);
     }
   }
 }

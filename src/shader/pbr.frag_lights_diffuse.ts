@@ -5,6 +5,7 @@ precision highp float;
 out vec4 outFragColor;
 
 in vec3 vNormalWS;
+in vec3 vFragPos;
 
 // Uniforms
 struct Material
@@ -12,6 +13,13 @@ struct Material
   vec3 albedo;
 };
 uniform Material uMaterial;
+
+struct Light {
+  vec3 position;
+  vec3 color;
+  float intensity;
+};
+uniform Light uLights[10];
 
 // From three.js
 vec4 sRGBToLinear( in vec4 value ) {
@@ -31,11 +39,25 @@ void main()
   // **DO NOT** forget to apply gamma correction as last step.
   // outFragColor.rgba = LinearTosRGB(vec4(albedo, 1.0));
 
-  vec3 normalColor = 0.5 * (normalize(vNormalWS) + 1.0);
+  vec3 color = vec3(0.0);
+  vec3 normal = normalize(vNormalWS);
 
-  vec3 finalColor = normalColor;
+  for(int i=0; i<10; i++) {
+    // vec3 lightDir = normalize(-uLights[i].position);  Directional lights
+    vec3 lightDir = normalize(uLights[i].position - vFragPos);
+    float dist = length(uLights[i].position - vFragPos);
+    float attenuation = 1.0 / (dist * dist);
+
+    float diff = max(dot(vNormalWS, lightDir), 0.0);
+
+    color += uLights[i].color * diff * uLights[i].intensity * attenuation;
+  }
+
+
+  vec3 hdrColor = color;
+  vec3 ldrColor = hdrColor / (1.0 + hdrColor);
 
   // Convert to sRGB space before output
-  outFragColor = LinearTosRGB(vec4(finalColor, 1.0));
+  outFragColor = LinearTosRGB(vec4(hdrColor, 1.0));
 }
 `;

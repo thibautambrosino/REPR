@@ -6,6 +6,8 @@ import { GLContext } from './gl';
 import { PBRShader } from './shader/pbr-shader';
 import { Texture, Texture2D } from './textures/texture';
 import { UniformType } from './types';
+import { DirectionalLight } from './lights/lights';
+import { PointLight } from './lights/lights';
 
 // GUI elements
 interface GUIProperties {
@@ -37,6 +39,7 @@ class Application {
       'uMaterial.albedo': vec3.create(),
       'uModel.LS_to_WS': mat4.create(),
       'uCamera.WS_to_CS': mat4.create(),
+      'uCamera.position': vec3.create(),
     };
 
     // Set GUI default values
@@ -107,7 +110,38 @@ class Application {
     // Set World-Space to Clip-Space transformation matrix (a.k.a view-projection).
     const aspect = this._context.gl.drawingBufferWidth / this._context.gl.drawingBufferHeight;
     let WS_to_CS = this._uniforms['uCamera.WS_to_CS'] as mat4;
+    this._uniforms['uCamera.position'] = this._camera._position;
     mat4.multiply(WS_to_CS, this._camera.computeProjection(aspect), this._camera.computeView());
+
+    // Set lights
+    const directionalLight1 = new DirectionalLight();
+    directionalLight1.setColorRGB(1.0, 1.0, 1.0);
+    directionalLight1.setDirection(1.0, -1.0, -1.0);
+
+    const pointLight1 = new PointLight();
+    pointLight1.setColorRGB(255.0, 0.0, 0.0);
+    pointLight1.setPosition(10.0, 10.0, 0.0);
+    pointLight1.setIntensity(10.0);
+
+    const pointLight2 = new PointLight();
+    pointLight2.setColorRGB(0.0, 255.0, 0.0);
+    pointLight2.setPosition(-10.0, -10.0, 0.0);
+    pointLight2.setIntensity(5.0);
+
+    const DLights = [
+      directionalLight1
+    ];
+
+    const PLights = [
+      pointLight1,
+      pointLight2
+    ]
+
+    for (let i = 0; i< PLights.length; i++) {
+      this._uniforms[`uLights[${i}].position`] = PLights[i].positionWS;
+      this._uniforms[`uLights[${i}].color`] = PLights[i].color;
+      this._uniforms[`uLights[${i}].intensity`] = PLights[i].intensity;
+    }
 
     // Draw the 5x5 grid of spheres
     const rows = 5;

@@ -29,13 +29,6 @@ void main()
   vec3 albedo = sRGBToLinear(vec4(uMaterial.albedo, 1.0)).rgb;
 
   // **DO NOT** forget to apply gamma correction as last step.
-  // outFragColor.rgba = LinearTosRGB(vec4(albedo, 1.0));
-
-  vec3 normalColor = 0.5 * (normalize(vNormalWS) + 1.0);
-
-  vec3 finalColor = normalColor;
-
-  // Convert to sRGB space before output
-  outFragColor = LinearTosRGB(vec4(finalColor, 1.0));
+  outFragColor.rgba = LinearTosRGB(vec4(albedo, 1.0));
 }
 `;

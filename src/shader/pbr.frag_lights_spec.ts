@@ -71,12 +71,16 @@ void main()
     fd = diffuseLobe
     fs = D*F*G / 4*NdotL*(NdotV)
 
-    ks = uMaterau
+    f0 = 0.04
+    ks = vec3(0.5)
     vec3 h = normalize(lightDir + viewDir);
     vec3 k = pow(uMaterial.roughness + 1, 2) / 8
     HdotV = max(dot(h, viewDir), 0.0);
     D = pow(uMaterial.roughness,2) / pi * pow(pow(normal*h,2)*((pow(uMaterial.roughness,2) - 1) + 1),2)
     F = uMaterial.f0 + (1- uMaterial.f0)*pow(1-HdotV,5)
+
+    f0 = 0.04 if low metalness else 
+
     G = (NdotL / (NdotL * (1-k)+k)) * (NdotV / (NdotV * (1-k)+k))
     """
 

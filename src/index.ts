@@ -6,7 +6,6 @@ import { GLContext } from './gl';
 import { PBRShader } from './shader/pbr-shader';
 import { Texture, Texture2D } from './textures/texture';
 import { UniformType } from './types';
-import { DirectionalLight } from './lights/lights';
 import { PointLight } from './lights/lights';
 
 // GUI elements
@@ -116,7 +115,7 @@ class Application {
     const pointLight2 = new PointLight();
     pointLight2.setColorRGB(0.0, 255.0, 0.0);
     pointLight2.setPosition(-6.0, -6.0, 15.0);
-    pointLight2.setIntensity(1.0);
+    pointLight2.setIntensity(0.5);
 
     const pointLight3 = new PointLight();
     pointLight3.setColorRGB(0.0, 0.0, 255.0);
@@ -126,7 +125,7 @@ class Application {
     const pointLight4 = new PointLight();
     pointLight4.setColorRGB(0.0, 120.0, 0.0);
     pointLight4.setPosition(-6.0, -6.5, 15.0);
-    pointLight4.setIntensity(0.2);
+    pointLight4.setIntensity(0.5);
 
     const pointLight5 = new PointLight();
     pointLight5.setColorRGB(255.0, 0.0, 0.0);
@@ -136,7 +135,7 @@ class Application {
     const pointLight6 = new PointLight();
     pointLight6.setColorRGB(0.0, 255.0, 0.0);
     pointLight6.setPosition(6.0, -6.5, 5.0);
-    pointLight6.setIntensity(0.2);
+    pointLight6.setIntensity(0.5);
 
     // Set Point light array
     const PLights = [

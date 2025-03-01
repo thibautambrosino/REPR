@@ -103,9 +103,10 @@ class Application {
 
     // Set the albedo uniform using the GUI value
     this._uniforms[`uMaterial[${0}].albedo`] = vec3.fromValues(
-      props.albedo[0] / 255,
-      props.albedo[1] / 255,
-      props.albedo[2] / 255);
+    props.albedo[0] / 255,
+    props.albedo[1] / 255,
+    props.albedo[2] / 255);
+    
 
     // Set World-Space to Clip-Space transformation matrix (a.k.a view-projection).
     const aspect = this._context.gl.drawingBufferWidth / this._context.gl.drawingBufferHeight;
@@ -120,12 +121,12 @@ class Application {
 
     const pointLight1 = new PointLight();
     pointLight1.setColorRGB(255.0, 0.0, 0.0);
-    pointLight1.setPosition(15.0, 15.0, 30.0);
+    pointLight1.setPosition(1.0, 1.0, 5.0);
     pointLight1.setIntensity(0.5);
 
     const pointLight2 = new PointLight();
     pointLight2.setColorRGB(0.0, 255.0, 0.0);
-    pointLight2.setPosition(-15.0, -15.0, 10.0);
+    pointLight2.setPosition(-1.0, -1.0, 10.0);
     pointLight2.setIntensity(0.5);
 
     const DLights = [

@@ -71,7 +71,7 @@ void main()
   for(int i=0; i<10; i++) {
     vec3 lightDir = normalize(uLights[i].position - vFragPos);
     float dist = length(uLights[i].position - vFragPos);
-    float attenuation = 1.0 / (dist * dist);
+    float attenuation = 1.0 / (dist * dist + 0.01);
 
     vec3 h = normalize(lightDir + viewDir);
     float NdotL = max(dot(normal, lightDir), 0.0);
@@ -83,7 +83,7 @@ void main()
     float G = geometrySchlickGGX(NdotV, NdotL, uMaterial[0].roughness);
     vec3 F = fresnelSchlick(HdotV, F0);
 
-    vec3 specular = (D * G * F) / (4.0 * NdotV * NdotL);
+    vec3 specular = (D * G * F) / max(4.0 * NdotV * NdotL, 0.001);
 
     float metalnessCoef = 1.0 - uMaterial[0].metalness;
     vec3 kd = (1.0 - F) * metalnessCoef;
@@ -99,6 +99,6 @@ void main()
   vec3 ldrColor = hdrColor / (1.0 + hdrColor);
 
   // Convert to sRGB space before output
-  outFragColor = LinearTosRGB(vec4(hdrColor, 1.0));
+  outFragColor = LinearTosRGB(vec4(ldrColor, 1.0));
 }
 `;

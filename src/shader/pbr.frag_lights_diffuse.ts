@@ -64,6 +64,6 @@ void main()
   vec3 ldrColor = hdrColor / (1.0 + hdrColor);
 
   // Convert to sRGB space before output
-  outFragColor = LinearTosRGB(vec4(hdrColor, 1.0));
+  outFragColor = LinearTosRGB(vec4(ldrColor, 1.0));
 }
 `;

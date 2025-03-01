@@ -36,10 +36,12 @@ vec4 LinearTosRGB( in vec4 value ) {
 	return vec4( mix( pow( value.rgb, vec3( 0.41666 ) ) * 1.055 - vec3( 0.055 ), value.rgb * 12.92, vec3( lessThanEqual( value.rgb, vec3( 0.0031308 ) ) ) ), value.a );
 }
 
+// Calcul of the reflectivity with Fresnel Equation
 vec3 fresnelSchlick(float HdotV, vec3 F0) {
   return F0 + (1.0 - F0) * pow(1.0 - HdotV, 5.0);
 }
 
+// Calcul of the Normal Distribution
 float distributionGGX(float NdotH, float roughness) {
   float a = roughness * roughness;
   float a2 = a * a;
@@ -48,6 +50,7 @@ float distributionGGX(float NdotH, float roughness) {
   return a2 / (3.14159265359 * den * den);
 }
 
+// Calcul of the shadowing term
 float geometrySchlickGGX(float NdotV, float NdotL, float roughness) {
   float r = (roughness + 1.0);
   float k = (r * r) / 8.0;

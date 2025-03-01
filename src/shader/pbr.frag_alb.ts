@@ -4,6 +4,7 @@ precision highp float;
 // Fragment shader output
 out vec4 outFragColor;
 
+// Fragement shader input
 in vec3 vNormalWS;
 
 // Uniforms

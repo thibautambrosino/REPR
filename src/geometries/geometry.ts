@@ -72,7 +72,7 @@ export class Geometry {
     normals: Float32Array,
     uvs: Float32Array | null,
     indices: Uint8Array | Uint16Array | Uint32Array,
-    mode = WebGL2RenderingContext.TRIANGLES
+    mode = WebGL2RenderingContext.TRIANGLES,
   ) {
     this._positions = positions;
     this._normals = normals;

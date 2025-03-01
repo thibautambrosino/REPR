@@ -101,51 +101,57 @@ class Application {
 
     const props = this._guiProperties;
 
-    // Set the albedo uniform using the GUI value
-    this._uniforms[`uMaterial[${0}].albedo`] = vec3.fromValues(
-    props.albedo[0] / 255,
-    props.albedo[1] / 255,
-    props.albedo[2] / 255);
-    
-
     // Set World-Space to Clip-Space transformation matrix (a.k.a view-projection).
     const aspect = this._context.gl.drawingBufferWidth / this._context.gl.drawingBufferHeight;
     let WS_to_CS = this._uniforms['uCamera.WS_to_CS'] as mat4;
     this._uniforms['uCamera.position'] = this._camera._position;
     mat4.multiply(WS_to_CS, this._camera.computeProjection(aspect), this._camera.computeView());
 
-    // Set lights
-    const directionalLight1 = new DirectionalLight();
-    directionalLight1.setColorRGB(1.0, 1.0, 1.0);
-    directionalLight1.setDirection(1.0, -1.0, -1.0);
-
+    // Initialize lights
     const pointLight1 = new PointLight();
-    pointLight1.setColorRGB(255.0, 0.0, 0.0);
-    pointLight1.setPosition(1.0, 1.0, 5.0);
+    pointLight1.setColorRGB(200.0, 200.0, 0.0);
+    pointLight1.setPosition(6.0, 6.0, 15.0);
     pointLight1.setIntensity(0.5);
 
     const pointLight2 = new PointLight();
     pointLight2.setColorRGB(0.0, 255.0, 0.0);
-    pointLight2.setPosition(-1.0, -1.0, 10.0);
-    pointLight2.setIntensity(0.5);
+    pointLight2.setPosition(-6.0, -6.0, 15.0);
+    pointLight2.setIntensity(1.0);
 
-    const DLights = [
-      directionalLight1
-    ];
+    const pointLight3 = new PointLight();
+    pointLight3.setColorRGB(0.0, 0.0, 255.0);
+    pointLight3.setPosition(5.5, 5.5, 15.0);
+    pointLight3.setIntensity(0.5);
 
+    const pointLight4 = new PointLight();
+    pointLight4.setColorRGB(0.0, 120.0, 0.0);
+    pointLight4.setPosition(-6.0, -6.5, 15.0);
+    pointLight4.setIntensity(0.2);
+
+    const pointLight5 = new PointLight();
+    pointLight5.setColorRGB(255.0, 0.0, 0.0);
+    pointLight5.setPosition(-5.5, 5.5, 5.0);
+    pointLight5.setIntensity(0.5);
+
+    const pointLight6 = new PointLight();
+    pointLight6.setColorRGB(0.0, 255.0, 0.0);
+    pointLight6.setPosition(6.0, -6.5, 5.0);
+    pointLight6.setIntensity(0.2);
+
+    // Set Point light array
     const PLights = [
-      pointLight1,
-      pointLight2
+      pointLight3,
+      pointLight4,
+      pointLight5,
+      pointLight6
     ]
 
+    // Give to the shader the Point light array as uniform
     for (let i = 0; i< PLights.length; i++) {
       this._uniforms[`uLights[${i}].position`] = PLights[i].positionWS;
       this._uniforms[`uLights[${i}].color`] = PLights[i].color;
       this._uniforms[`uLights[${i}].intensity`] = PLights[i].intensity;
     }
-
-    this._uniforms[`uMaterial[${0}].metalness`] = 0.8;
-    this._uniforms[`uMaterial[${0}].roughness`] = 0.5;
 
     // Draw the 5x5 grid of spheres
     const rows = 5;
@@ -153,6 +159,13 @@ class Application {
     const spacing = this._geometry.radius * 2.5;
     for (let r = 0; r < rows; ++r) {
       for (let c = 0; c < columns; ++c) {
+        const materialID = c + r *rows;
+
+        // Set the albedo uniform using the GUI value
+        this._uniforms[`uMaterial[${materialID}].albedo`] = vec3.fromValues(
+          props.albedo[0] / 255,
+          props.albedo[1] / 255,
+          props.albedo[2] / 255);
 
         // Set Local-Space to World-Space transformation matrix (a.k.a model).
         const WsSphereTranslation = vec3.fromValues(
@@ -163,8 +176,10 @@ class Application {
         const LS_to_WS = this._uniforms["uModel.LS_to_WS"] as mat4;
         mat4.fromTranslation(LS_to_WS, WsSphereTranslation);
 
-        //this._uniforms[`uMaterial[${c + r * rows}].metalness`] = 1 - (0.2 * c);
-        //this._uniforms[`uMaterial[${c + r * rows}].roughness`] = 1 - (0.2 * r);
+        // set Material uniforms 
+        this._uniforms[`uMaterial[${materialID}].metalness`] = 1 - (0.2 * c);
+        this._uniforms[`uMaterial[${materialID}].roughness`] = 1 - (0.2 * r);
+        this._uniforms[`uMaterialID`] = materialID;
 
         // Draw the triangles
         this._context.draw(this._geometry, this._shader, this._uniforms);

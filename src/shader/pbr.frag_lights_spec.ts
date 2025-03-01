@@ -4,9 +4,11 @@ precision highp float;
 // Fragment shader output
 out vec4 outFragColor;
 
+// Fragement shader input
 in vec3 vNormalWS;
 in vec3 vFragPos;
 in vec3 vViewDirWS;
+flat in int vMaterialID;
 
 // Uniforms
 struct Material
@@ -46,7 +48,6 @@ float distributionGGX(float NdotH, float roughness) {
   return a2 / (3.14159265359 * den * den);
 }
 
-// Geometry Smith function (Schlick-GGX)
 float geometrySchlickGGX(float NdotV, float NdotL, float roughness) {
   float r = (roughness + 1.0);
   float k = (r * r) / 8.0;
@@ -58,7 +59,7 @@ float geometrySchlickGGX(float NdotV, float NdotL, float roughness) {
 void main()
 {
   // **DO NOT** forget to do all your computation in linear space.
-  vec3 albedo = sRGBToLinear(vec4(uMaterial[0].albedo, 1.0)).rgb;
+  vec3 albedo = sRGBToLinear(vec4(uMaterial[vMaterialID].albedo, 1.0)).rgb;
 
   vec3 color = vec3(0.0);
   vec3 normal = normalize(vNormalWS);
@@ -66,9 +67,10 @@ void main()
   float pi = 3.14159265359;
 
   // F0 calcul depend on metalness, 0.04 if not
-  vec3 F0 = mix(vec3(0.04), albedo, uMaterial[0].metalness);
+  vec3 F0 = mix(vec3(0.04), albedo, uMaterial[vMaterialID].metalness);
 
   for(int i=0; i<10; i++) {
+    // Calcul Light Direction with a distance and an attenuation
     vec3 lightDir = normalize(uLights[i].position - vFragPos);
     float dist = length(uLights[i].position - vFragPos);
     float attenuation = 1.0 / (dist * dist + 0.01);
@@ -79,22 +81,25 @@ void main()
     float NdotH = max(dot(normal, h), 0.0);
     float HdotV = max(dot(h, viewDir), 0.0);
 
-    float D = distributionGGX(NdotH, uMaterial[0].roughness);
-    float G = geometrySchlickGGX(NdotV, NdotL, uMaterial[0].roughness);
+    // Calcul the specular
+    float D = distributionGGX(NdotH, uMaterial[vMaterialID].roughness);
+    float G = geometrySchlickGGX(NdotV, NdotL, uMaterial[vMaterialID].roughness);
     vec3 F = fresnelSchlick(HdotV, F0);
-
     vec3 specular = (D * G * F) / max(4.0 * NdotV * NdotL, 0.001);
 
-    float metalnessCoef = 1.0 - uMaterial[0].metalness;
+    float metalnessCoef = 1.0 - uMaterial[vMaterialID].metalness;
     vec3 kd = (1.0 - F) * metalnessCoef;
-
     vec3 diffuse = NdotL * kd * (albedo / pi);
-    // diffuseLobe  = mix(metalnessCoef, diffuseLobe, NdotL);
+    //vec3 diffuse = mix(albedo/pi, kd, NdotL);
 
+    // Calcul the radiance
     vec3 radiance = uLights[i].color * uLights[i].intensity * attenuation;
+
+    // Add the diffuse and the specular
     color += (diffuse + specular) * radiance;
   }
 
+  // Tone Mapping HDR to LDR
   vec3 hdrColor = color;
   vec3 ldrColor = hdrColor / (1.0 + hdrColor);
 

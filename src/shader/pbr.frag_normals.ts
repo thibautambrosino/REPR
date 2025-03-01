@@ -4,7 +4,8 @@ precision highp float;
 // Fragment shader output
 out vec4 outFragColor;
 
-in vec3 vViewDirWS;
+// Fragement shader input
+in vec3 vNormalWS;
 
 // Uniforms
 struct Material
@@ -25,11 +26,10 @@ vec4 LinearTosRGB( in vec4 value ) {
 
 void main()
 {
-  vec3 albedo = sRGBToLinear(vec4(uMaterial.albedo, 1.0)).rgb;
-  vec3 viewDir = 0.5 * (normalize(vViewDirWS) + 1.0);
+  // normalize normals in world space
+  vec3 normalColor = 0.5 * (normalize(vNormalWS) + 1.0);
+  vec3 finalColor = normalColor;
 
-  // viewDir
-  vec3 finalColor = viewDir;
   // Convert to sRGB space before output
   outFragColor = LinearTosRGB(vec4(finalColor, 1.0));
 }

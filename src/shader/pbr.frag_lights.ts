@@ -4,6 +4,7 @@ precision highp float;
 // Fragment shader output
 out vec4 outFragColor;
 
+// Fragement shader input
 in vec3 vNormalWS;
 in vec3 vFragPos;
 
@@ -36,23 +37,18 @@ void main()
   // **DO NOT** forget to do all your computation in linear space.
   vec3 albedo = sRGBToLinear(vec4(uMaterial.albedo, 1.0)).rgb;
 
-  // **DO NOT** forget to apply gamma correction as last step.
-  // outFragColor.rgba = LinearTosRGB(vec4(albedo, 1.0));
-
   vec3 color = vec3(0.0);
   vec3 normal = normalize(vNormalWS);
 
   for(int i=0; i<10; i++) {
-    // vec3 lightDir = normalize(-uLights[i].position);  Directional lights
+    // Calcul Light Direction with a distance and an attenuation
     vec3 lightDir = normalize(uLights[i].position - vFragPos);
     float dist = length(uLights[i].position - vFragPos);
     float attenuation = 1.0 / (dist * dist);
 
-    float diff = max(dot(vNormalWS, lightDir), 0.0);
-
-    color += uLights[i].color * diff * uLights[i].intensity * attenuation;
+    // Calcul the radiance
+    color += uLights[i].color * uLights[i].intensity * attenuation;
   }
-
 
   vec3 finalColor = color;
 

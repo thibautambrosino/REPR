@@ -4,9 +4,11 @@ precision highp float;
 // Fragment shader output
 out vec4 outFragColor;
 
+// Fragement shader input
 in vec3 vNormalWS;
 in vec3 vFragPos;
 in vec3 vViewDirWS;
+flat in int vMaterialID;
 
 // Uniforms
 struct Material
@@ -15,7 +17,7 @@ struct Material
   float metalness;
   vec3 albedo;
 };
-uniform Material uMaterial;
+uniform Material uMaterial[25];
 
 struct Light {
   vec3 position;
@@ -37,29 +39,27 @@ vec4 LinearTosRGB( in vec4 value ) {
 void main()
 {
   // **DO NOT** forget to do all your computation in linear space.
-  vec3 albedo = sRGBToLinear(vec4(uMaterial.albedo, 1.0)).rgb;
-
-  // **DO NOT** forget to apply gamma correction as last step.
-  // outFragColor.rgba = LinearTosRGB(vec4(albedo, 1.0));
+  vec3 albedo = sRGBToLinear(vec4(uMaterial[vMaterialID].albedo, 1.0)).rgb;
 
   vec3 color = vec3(0.0);
   vec3 normal = normalize(vNormalWS);
   vec3 viewDir = normalize(vViewDirWS);
 
-
   for(int i=0; i<10; i++) {
-    // vec3 lightDir = normalize(-uLights[i].position);  Directional lights
+    // Calcul Light Direction with a distance and an attenuation
     vec3 lightDir = normalize(uLights[i].position - vFragPos);
     float dist = length(uLights[i].position - vFragPos);
     float attenuation = 1.0 / (dist * dist);
 
+    // Calcul the diffuse
     float NdotL = max(dot(normal, lightDir), 0.0);
-
     vec3 diffuseLobe = NdotL * (albedo / 3.14159265359);
 
+    // Calcul the radiance
     color += uLights[i].color * diffuseLobe * uLights[i].intensity * attenuation;
   }
 
+  // Tone Mapping HDR to LDR
   vec3 hdrColor = color;
   vec3 ldrColor = hdrColor / (1.0 + hdrColor);
 

@@ -13,6 +13,7 @@ in vec3 in_normal;
 out vec3 vNormalWS;
 out vec3 vFragPos;
 out vec3 vViewDirWS;
+flat out int vMaterialID;
 #ifdef USE_UV
   out vec2 vUv;
 #endif
@@ -31,6 +32,8 @@ struct Model
 };
 uniform Model uModel;
 
+uniform int uMaterialID;
+
 void main()
 {
   vec4 positionLocal = vec4(in_position, 1.0);
@@ -39,7 +42,8 @@ void main()
   vNormalWS = in_normal;
   vFragPos = worldPos.xyz;
   vViewDirWS = normalize(uCamera.position - worldPos.xyz);
-  
+  vMaterialID = uMaterialID;
+
   gl_Position = uCamera.WS_to_CS * uModel.LS_to_WS * positionLocal;
 }
 `;

@@ -102,7 +102,7 @@ class Application {
     const props = this._guiProperties;
 
     // Set the albedo uniform using the GUI value
-    this._uniforms['uMaterial.albedo'] = vec3.fromValues(
+    this._uniforms[`uMaterial[${0}].albedo`] = vec3.fromValues(
       props.albedo[0] / 255,
       props.albedo[1] / 255,
       props.albedo[2] / 255);
@@ -120,12 +120,12 @@ class Application {
 
     const pointLight1 = new PointLight();
     pointLight1.setColorRGB(255.0, 0.0, 0.0);
-    pointLight1.setPosition(1.5, 1.5, 2.0);
+    pointLight1.setPosition(15.0, 15.0, 30.0);
     pointLight1.setIntensity(0.5);
 
     const pointLight2 = new PointLight();
     pointLight2.setColorRGB(0.0, 255.0, 0.0);
-    pointLight2.setPosition(-1.5, -1.5, 2.0);
+    pointLight2.setPosition(-15.0, -15.0, 10.0);
     pointLight2.setIntensity(0.5);
 
     const DLights = [
@@ -143,6 +143,9 @@ class Application {
       this._uniforms[`uLights[${i}].intensity`] = PLights[i].intensity;
     }
 
+    this._uniforms[`uMaterial[${0}].metalness`] = 0.8;
+    this._uniforms[`uMaterial[${0}].roughness`] = 0.5;
+
     // Draw the 5x5 grid of spheres
     const rows = 5;
     const columns = 5;
@@ -159,12 +162,12 @@ class Application {
         const LS_to_WS = this._uniforms["uModel.LS_to_WS"] as mat4;
         mat4.fromTranslation(LS_to_WS, WsSphereTranslation);
 
-        this._uniforms[`uMaterial[${c}].metalness`] = 1 - (0.2 * c);
+        //this._uniforms[`uMaterial[${c + r * rows}].metalness`] = 1 - (0.2 * c);
+        //this._uniforms[`uMaterial[${c + r * rows}].roughness`] = 1 - (0.2 * r);
 
         // Draw the triangles
         this._context.draw(this._geometry, this._shader, this._uniforms);
-      }
-      this._uniforms[`uMaterial[${r}].roughness`] = 1 - (0.2 * r);
+      } 
     }
   }
 }

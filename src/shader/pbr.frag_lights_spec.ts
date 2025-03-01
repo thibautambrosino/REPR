@@ -15,7 +15,7 @@ struct Material
   float metalness;
   vec3 albedo;
 };
-uniform Material uMaterial;
+uniform Material uMaterial[25];
 
 struct Light {
   vec3 position;
@@ -34,57 +34,65 @@ vec4 LinearTosRGB( in vec4 value ) {
 	return vec4( mix( pow( value.rgb, vec3( 0.41666 ) ) * 1.055 - vec3( 0.055 ), value.rgb * 12.92, vec3( lessThanEqual( value.rgb, vec3( 0.0031308 ) ) ) ), value.a );
 }
 
+vec3 fresnelSchlick(float HdotV, vec3 F0) {
+  return F0 + (1.0 - F0) * pow(1.0 - HdotV, 5.0);
+}
+
+float distributionGGX(float NdotH, float roughness) {
+  float a = roughness * roughness;
+  float a2 = a * a;
+  float NdotH2 = NdotH * NdotH;
+  float den = (NdotH2 * (a2 - 1.0) + 1.0);
+  return a2 / (3.14159265359 * den * den);
+}
+
+// Geometry Smith function (Schlick-GGX)
+float geometrySchlickGGX(float NdotV, float NdotL, float roughness) {
+  float r = (roughness + 1.0);
+  float k = (r * r) / 8.0;
+  float GSnv = NdotV / (NdotV * (1.0 - k) + k);
+  float GSnl = NdotL / (NdotL * (1.0 - k) + k);
+  return GSnl * GSnv;
+}
+
 void main()
 {
   // **DO NOT** forget to do all your computation in linear space.
-  vec3 albedo = sRGBToLinear(vec4(uMaterial.albedo, 1.0)).rgb;
-
-  // **DO NOT** forget to apply gamma correction as last step.
-  // outFragColor.rgba = LinearTosRGB(vec4(albedo, 1.0));
+  vec3 albedo = sRGBToLinear(vec4(uMaterial[0].albedo, 1.0)).rgb;
 
   vec3 color = vec3(0.0);
   vec3 normal = normalize(vNormalWS);
   vec3 viewDir = normalize(vViewDirWS);
   float pi = 3.14159265359;
 
+  // F0 calcul depend on metalness, 0.04 if not
+  vec3 F0 = mix(vec3(0.04), albedo, uMaterial[0].metalness);
+
   for(int i=0; i<10; i++) {
-    // vec3 lightDir = normalize(-uLights[i].position);  Directional lights
     vec3 lightDir = normalize(uLights[i].position - vFragPos);
     float dist = length(uLights[i].position - vFragPos);
     float attenuation = 1.0 / (dist * dist);
 
+    vec3 h = normalize(lightDir + viewDir);
     float NdotL = max(dot(normal, lightDir), 0.0);
-    vec3 metalnessCoef = 1 - uMaterial.metalness;
+    float NdotV = max(dot(normal, viewDir), 0.0);
+    float NdotH = max(dot(normal, h), 0.0);
+    float HdotV = max(dot(h, viewDir), 0.0);
 
-    vec3 diffuseLobe = NdotL * (albedo / pi);
-    diffuseLobe  = mix(metalnessCoef, diffuseLobe, NdotL);
+    float D = distributionGGX(NdotH, uMaterial[0].roughness);
+    float G = geometrySchlickGGX(NdotV, NdotL, uMaterial[0].roughness);
+    vec3 F = fresnelSchlick(HdotV, F0);
 
-    vec3 h = normalize(lightDir + viewDir);
+    vec3 specular = (D * G * F) / (4.0 * NdotV * NdotL);
 
-    vec3 D = pow(uMaterial.roughness,2) / pi * pow(pow(normal*h,2)*((pow(uMaterial.roughness,2) - 1) + 1),2);
+    float metalnessCoef = 1.0 - uMaterial[0].metalness;
+    vec3 kd = (1.0 - F) * metalnessCoef;
 
-    """
-    NdotV = max(dot(normal, viewDir), 0.0);
+    vec3 diffuse = NdotL * kd * (albedo / pi);
+    // diffuseLobe  = mix(metalnessCoef, diffuseLobe, NdotL);
 
-    fr = (1-ks)*fd + ks*fs
-
-    fd = diffuseLobe
-    fs = D*F*G / 4*NdotL*(NdotV)
-
-    f0 = 0.04
-    ks = vec3(0.5)
-    vec3 h = normalize(lightDir + viewDir);
-    vec3 k = pow(uMaterial.roughness + 1, 2) / 8
-    HdotV = max(dot(h, viewDir), 0.0);
-    D = pow(uMaterial.roughness,2) / pi * pow(pow(normal*h,2)*((pow(uMaterial.roughness,2) - 1) + 1),2)
-    F = uMaterial.f0 + (1- uMaterial.f0)*pow(1-HdotV,5)
-
-    f0 = 0.04 if low metalness else 
-
-    G = (NdotL / (NdotL * (1-k)+k)) * (NdotV / (NdotV * (1-k)+k))
-    """
-
-    color += uLights[i].color * diffuseLobe * uLights[i].intensity * attenuation;
+    vec3 radiance = uLights[i].color * uLights[i].intensity * attenuation;
+    color += (diffuse + specular) * radiance;
   }
 
   vec3 hdrColor = color;
